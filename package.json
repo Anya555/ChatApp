@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Real time messenger app",
   "main": "server.js",
+  "engines": {
+    "node": "14.3.0",
+    "npm": "6.14.5"
+  },
   "scripts": {
     "server": "nodemon index.js --ignore client",
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
