@@ -4,8 +4,7 @@
   "description": "Real time messenger app",
   "main": "server.js",
   "engines": {
-    "node": "14.3.0",
-    "npm": "6.14.5"
+    "node": "14.3.0"
   },
   "scripts": {
     "server": "nodemon index.js --ignore client",
