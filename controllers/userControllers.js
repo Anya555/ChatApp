@@ -14,7 +14,7 @@ module.exports = {
     try {
       const { firstName, lastName, email, password } = req.body;
       // ===========================================================//
-      const user = await User.findOne({
+      let user = await User.findOne({
         where: {
           email: email,
         },
@@ -23,7 +23,7 @@ module.exports = {
 
       // =============================================================//
       const hashedpassword = await hashPassword(password);
-      const newUser = new User({
+      user = new User({
         firstName,
         lastName,
         email,
@@ -33,18 +33,30 @@ module.exports = {
       // The JWT_SECRET environmental variable holds a private key that is used when signing the JWT,
       //this key will also be used when parsing the JWT to verify that it hasn’t been compromised by an authorized party.
       const accessToken = jwt.sign(
-        { userId: newUser.id },
+        { userId: user.id },
         process.env.JWT_SECRET,
         {
-          expiresIn: "1d",
+          expiresIn: "5m",
         }
       );
 
-      newUser.accessToken = accessToken;
-      await newUser.save();
+      const refreshToken = jwt.sign(
+        { userId: user.id },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
+
+      user.accessToken = accessToken;
+      user.refreshToken = refreshToken;
+      await user.save();
+      delete user.dataValues.password;
+
       res.json({
-        data: newUser,
+        user,
         accessToken,
+        refreshToken,
       });
     } catch (error) {
       next(error);
@@ -70,25 +82,54 @@ module.exports = {
         { userId: user.id },
         process.env.JWT_SECRET,
         {
-          expiresIn: "1d",
+          expiresIn: "1h",
+        }
+      );
+
+      const refreshToken = jwt.sign(
+        { userId: user.id },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1h",
         }
       );
 
       await User.update(accessToken, { where: { id: user.id } });
-      console.log("this works");
+      user.refreshToken = refreshToken;
+      delete user.dataValues.password;
+
       res.status(200).json({
-        data: {
-          email: user.email,
-          role: user.role,
-          firstName: user.firstName,
-          userId: user.id,
-        },
+        user,
         accessToken,
+        refreshToken,
       });
     } catch (error) {
       return res
         .status(400)
         .json({ status: "Data you entered doesn't match our records" });
+    }
+  },
+
+  findUserById: async (req, res) => {
+    try {
+      const user = await User.findByPk(req.params.id);
+      res.status(200).json(user);
+    } catch (error) {
+      return res.status(400).json({ status: "User does not exist" });
+    }
+  },
+
+  allowIfLoggedin: async (req, res, next) => {
+    try {
+      const user = res.locals.loggedInUser; // res.locals.loggedInUser variable holds the details of the logged-in user
+      if (!user)
+        return res.status(401).json({
+          status: "You need to be logged in to access this route",
+        });
+      req.user = user;
+      next();
+    } catch (error) {
+      next(error);
     }
   },
 };

@@ -5,4 +5,6 @@ router.route("/signup").post(userController.signup);
 
 router.route("/login").post(userController.login);
 
+router.route("/user-profile/:id").get(userController.findUserById);
+
 module.exports = router;

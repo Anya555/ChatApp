@@ -1,26 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ApiService } from '../../../utils/api/api.service';
-import { Router } from '@angular/router';
-
+import { Router, ActivatedRoute } from '@angular/router';
+import { User, UserContext } from '../../../app/userContext';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private context: UserContext,
+    private route: ActivatedRoute
+  ) {}
 
-  constructor(private apiService: ApiService, private router: Router) { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   loginUser(f: NgForm): void {
-
-    this.apiService.login(f.value).subscribe(data => {
-      f.reset();
-      this.router.navigate(['user-profile']); 
-    })
+    this.apiService.login(f.value).subscribe((userContext: UserContext) => {
+      this.context.user = userContext.user;
+      this.context.accessToken = userContext.accessToken;
+      this.context.refreshToken = userContext.refreshToken;
+      let authorizedUser = {
+        accessToken: this.context.accessToken,
+        refreshToken: this.context.refreshToken,
+      };
+      localStorage.setItem('tokens', JSON.stringify(authorizedUser));
+      this.router.navigate(['user-profile/', this.context.user.id]);
+    });
   }
-
 }

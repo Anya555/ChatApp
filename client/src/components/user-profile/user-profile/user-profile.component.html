@@ -1,1 +1,2 @@
-<p>user-profile works!</p>
+<p>{{ context.user.firstName + " " + context.user.lastName }}</p>
+<button (click)="signOut()">Sign out</button>

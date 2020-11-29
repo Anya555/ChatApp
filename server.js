@@ -6,13 +6,14 @@ const routes = require("./routes");
 const db = require("./models");
 const PORT = process.env.PORT || 3001;
 const jwt = require("jsonwebtoken");
-const User = require("./models/userModel");
+const User = require("./models").Users;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(async (req, res, next) => {
   if (req.headers["x-access-token"]) {
     const accessToken = req.headers["x-access-token"];
+    console.log(accessToken, "header");
     const { userId, exp } = await jwt.verify(
       accessToken,
       process.env.JWT_SECRET
@@ -23,11 +24,8 @@ app.use(async (req, res, next) => {
         error: "JWT token has expired, please login to obtain a new one",
       });
     }
-    res.locals.loggedInUser = await User.findByPk({
-      where: {
-        id: userId,
-      },
-    });
+
+    res.locals.loggedInUser = await User.findByPk(userId);
     next();
   } else {
     next();
