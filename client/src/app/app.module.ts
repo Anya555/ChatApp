@@ -10,6 +10,7 @@ import { UserProfileModule } from '../components/user-profile/user-profile.modul
 import { UserContext } from './userContext';
 import { AuthGuard } from './auth.guard';
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [

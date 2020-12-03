@@ -31,4 +31,5 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['user-profile/', this.context.user.id]);
     });
   }
+  
 }

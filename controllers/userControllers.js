@@ -132,4 +132,13 @@ module.exports = {
       next(error);
     }
   },
+
+  getAllUsers: async (req, res) => {
+    try {
+      const users = await User.findAll(req.query);
+      res.status(200).json(users);
+    } catch (error) {
+      return res.status(400).json({ status: "No users have been found" });
+    }
+  },
 };

@@ -21,4 +21,8 @@ export class ApiService {
   findUserById = (id: string): Observable<User> => {
     return this.http.get<User>('/api/users/user-profile/' + id);
   };
+
+  findAllUsers = () => {
+    return this.http.get('/api/users');
+  };
 }
