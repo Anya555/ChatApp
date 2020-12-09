@@ -5,7 +5,6 @@ import {
   RouterStateSnapshot,
   Router,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
 import { UserContext } from './userContext';
 import { ApiService } from '../utils/api/api.service';
 
@@ -21,13 +20,14 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean> {
-    this.context.user = await this.apiService
-      .findUserById(route.params.id)
-      .toPromise();
+    let authorizedUser =
+      JSON.parse(localStorage.getItem('authorizedUser')) || {};
+    this.context.accessToken = authorizedUser.accessToken;
+    this.context.refreshToken = authorizedUser.refreshToken;
 
-    let tokens = JSON.parse(localStorage.getItem('tokens')) || {};
-    this.context.accessToken = tokens.accessToken;
-    this.context.refreshToken = tokens.refreshToken;
+    this.context.user = await this.apiService
+      .findUserById(authorizedUser.id)
+      .toPromise();
 
     if (this.context.accessToken && this.context.user) {
       return true;

@@ -26,10 +26,10 @@ export class LoginComponent implements OnInit {
       let authorizedUser = {
         accessToken: this.context.accessToken,
         refreshToken: this.context.refreshToken,
+        id: this.context.user.id,
       };
-      localStorage.setItem('tokens', JSON.stringify(authorizedUser));
+      localStorage.setItem('authorizedUser', JSON.stringify(authorizedUser));
       this.router.navigate(['user-profile/', this.context.user.id]);
     });
   }
-  
 }

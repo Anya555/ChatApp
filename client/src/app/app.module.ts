@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,7 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserProfileModule } from '../components/user-profile/user-profile.module';
 import { UserContext } from './userContext';
 import { AuthGuard } from './auth.guard';
-
+import { GlobalErrorHandler } from './error-handler';
+import { FriendProfileModule } from '../components/friend-profile/friend-profile.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,8 +22,13 @@ import { AuthGuard } from './auth.guard';
     NgbModule,
     HttpClientModule,
     UserProfileModule,
+    FriendProfileModule,
   ],
-  providers: [UserContext, AuthGuard],
+  providers: [
+    UserContext,
+    AuthGuard,
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

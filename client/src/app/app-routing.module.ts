@@ -5,6 +5,8 @@ import { LoginComponent } from '../components/login/login/login.component';
 import { UserProfileComponent } from '../components/user-profile/user-profile/user-profile.component';
 import { AuthGuard } from './auth.guard';
 import { ProfileResolver } from '../components/user-profile/profile-resolver.resolver';
+import { FriendProfileComponent } from '../components/friend-profile/friend-profile/friend-profile.component';
+import { FriendProfileResolver } from '../components/friend-profile/friend-profile.resolver';
 const routes: Routes = [
   {
     path: '',
@@ -20,6 +22,13 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     resolve: {
       data: ProfileResolver,
+    },
+  },
+  {
+    path: 'friend-profile/:id',
+    component: FriendProfileComponent,
+    resolve: {
+      data: FriendProfileResolver,
     },
   },
 ];
