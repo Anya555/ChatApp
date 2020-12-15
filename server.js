@@ -14,7 +14,6 @@ app.use(async (req, res, next) => {
   try {
     if (req.headers["x-access-token"]) {
       const accessToken = req.headers["x-access-token"];
-      console.log(accessToken, "header");
       const { userId, exp } = await jwt.verify(
         accessToken,
         process.env.JWT_SECRET

@@ -15,9 +15,6 @@ export class ApiService {
     return this.http.post('/api/users/login', user);
   };
 
-  // checkIfLoggedIn = () => {
-  //   return this.http.get('/api/users/user-profile');
-  // };
   findUserById = (id: string): Observable<User> => {
     return this.http.get<User>('/api/users/user-profile/' + id);
   };
