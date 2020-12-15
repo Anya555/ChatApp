@@ -25,4 +25,10 @@ export class ApiService {
   findAllUsers = () => {
     return this.http.get('/api/users');
   };
+
+  addFriend = (userId, friendId) => {
+    return this.http.post(`/api/users/user-profile/${userId}/friend`, {
+      friendId,
+    });
+  };
 }

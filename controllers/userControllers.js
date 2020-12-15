@@ -1,6 +1,8 @@
-const User = require("../models").Users;
+const User = require("../models").User;
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const db = require("../models");
 async function hashPassword(password) {
   return await bcrypt.hash(password, 10);
 }
@@ -138,7 +140,27 @@ module.exports = {
       const users = await User.findAll(req.query);
       res.status(200).json(users);
     } catch (error) {
-      return res.status(400).json({ status: "No users have been found" });
+      return res.status(400).json({ status: "Error occurred" });
     }
   },
+
+  addFriend: async (req, res) => {
+    try {
+      const newFriend = {
+        userId: req.params.id,
+        friendId: req.body.friendId,
+      };
+      await db.UserFriends.create(newFriend);
+
+      console.log("=================================");
+      res.status(200).json(newFriend);
+    } catch (error) {
+      return res.status(400).json({ status: "Error occurred" });
+    }
+  },
+  // addFriend: (req, res) => {
+  //   db.UserFriends.create(req.body)
+  //     .then((dbModel) => res.json(dbModel))
+  //     .catch((err) => res.status(422).json(err));
+  // },
 };

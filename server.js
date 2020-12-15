@@ -6,7 +6,7 @@ const routes = require("./routes");
 const db = require("./models");
 const PORT = process.env.PORT || 3001;
 const jwt = require("jsonwebtoken");
-const User = require("./models").Users;
+const User = require("./models").User;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

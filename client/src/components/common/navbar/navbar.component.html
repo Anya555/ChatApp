@@ -3,17 +3,12 @@
     <div class="col-12">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <h1 class="navbar-brand">ChatApp</h1>
-        <h3>
+        <h3 class="mr-auto">
           {{ userName }}
         </h3>
-        <img
-          src="/assets/images/avatar.png"
-          width="100px"
-          height="100px"
-          class="mr-auto"
-        />
-
-        <form>
+        <img src="/assets/images/avatar.png" width="100px" height="100px" />
+        <ng-content> </ng-content>
+        <form class="ml-auto">
           <input
             id="search"
             class="form-control mr-sm-2 search"

@@ -12,6 +12,7 @@ export class UserProfileComponent implements OnInit {
   currentUserName =
     this.context.user.firstName + ' ' + this.context.user.lastName;
   constructor(public context: UserContext, private route: ActivatedRoute) {}
+
   ngOnInit(): void {
     this.route.data.subscribe((data) => (this.users = data.data));
   }
