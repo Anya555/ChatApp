@@ -28,4 +28,8 @@ export class ApiService {
       friendId,
     });
   };
+
+  checkIfFriend = (id) => {
+    return this.http.get('/api/users/friend-profile/' + id);
+  };
 }

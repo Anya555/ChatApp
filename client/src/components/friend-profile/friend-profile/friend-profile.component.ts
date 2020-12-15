@@ -10,6 +10,7 @@ import { User, UserContext } from '../../../app/userContext';
 export class FriendProfileComponent implements OnInit {
   currentUserName: string;
   friendId: Number;
+  isFriend: string;
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
@@ -17,17 +18,29 @@ export class FriendProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isFriend = 'Add friend';
     this.route.data.subscribe((user) => {
       this.friendId = user.data.id;
       this.currentUserName = user.data.firstName + ' ' + user.data.lastName;
     });
+    this.checkIfFriend();
+  }
+
+  checkIfFriend(): void {
+    this.apiService
+      .checkIfFriend(this.userContext.user.id)
+      .subscribe((user: any) => {
+        if (user.friendId === this.friendId) {
+          this.isFriend = 'Pending friend request';
+        }
+      });
   }
 
   addFriend(): void {
     this.apiService
       .addFriend(this.userContext.user.id, this.friendId)
       .subscribe((friend: User) => {
-        console.log(friend);
+        this.isFriend = 'Pending friend request';
       });
   }
 }

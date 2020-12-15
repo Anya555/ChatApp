@@ -11,4 +11,6 @@ router.route("/user-profile/:id").get(userController.findUserById);
 
 router.route("/").get(userController.getAllUsers);
 
+router.route("/friend-profile/:id").get(userController.checkIfFriend);
+
 module.exports = router;
