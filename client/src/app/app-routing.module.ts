@@ -27,6 +27,7 @@ const routes: Routes = [
   {
     path: 'friend-profile/:id',
     component: FriendProfileComponent,
+    canActivate: [AuthGuard],
     resolve: {
       data: FriendProfileResolver,
     },

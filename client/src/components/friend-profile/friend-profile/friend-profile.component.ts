@@ -11,6 +11,8 @@ export class FriendProfileComponent implements OnInit {
   currentUserName: string;
   friendId: Number;
   isFriend: string;
+  disabled: boolean;
+  users: User[];
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
@@ -18,22 +20,23 @@ export class FriendProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isFriend = 'Add friend';
-    this.route.data.subscribe((user) => {
-      this.friendId = user.data.id;
-      this.currentUserName = user.data.firstName + ' ' + user.data.lastName;
-    });
-    this.checkIfFriend();
-  }
+    this.route.data.subscribe((data) => {
+      this.users = data.data.users;
+      this.friendId = data.data.user.id;
+      this.currentUserName =
+        data.data.user.firstName + ' ' + data.data.user.lastName;
 
-  checkIfFriend(): void {
-    this.apiService
-      .checkIfFriend(this.userContext.user.id)
-      .subscribe((user: any) => {
-        if (user.friendId === this.friendId) {
-          this.isFriend = 'Pending friend request';
-        }
-      });
+      let friend = data.data.userFriends.find(
+        (userFriend) => this.friendId === userFriend.friendId
+      );
+      if (friend) {
+        this.isFriend = 'Pending friend request';
+        this.disabled = true;
+      } else {
+        this.isFriend = 'Add friend';
+        this.disabled = false;
+      }
+    });
   }
 
   addFriend(): void {
@@ -41,6 +44,7 @@ export class FriendProfileComponent implements OnInit {
       .addFriend(this.userContext.user.id, this.friendId)
       .subscribe((friend: User) => {
         this.isFriend = 'Pending friend request';
+        this.disabled = true;
       });
   }
 }

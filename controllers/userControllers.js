@@ -157,14 +157,14 @@ module.exports = {
     }
   },
 
-  checkIfFriend: async (req, res) => {
+  findAllUserFriends: async (req, res) => {
     try {
-      const user = await db.UserFriends.findOne({
+      const userFriends = await db.UserFriends.findAll({
         where: {
           userId: req.params.id,
         },
       });
-      res.status(200).json(user);
+      res.status(200).json(userFriends);
     } catch (error) {
       return res.status(400).json({ status: "User does not exist" });
     }
