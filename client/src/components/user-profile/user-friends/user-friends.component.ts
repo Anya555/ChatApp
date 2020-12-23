@@ -45,4 +45,12 @@ export class UserFriendsComponent implements OnInit {
         this.getPendingFriendsRequests();
       });
   }
+
+  deleteFriendsRequest(id): void {
+    let userToDelete = this.pendingRequests.find(
+      (user) => (user.friendId = id)
+    );
+    console.log(userToDelete);
+    this.apiService.deleteFriendsRequest(userToDelete.id).subscribe(() => {});
+  }
 }

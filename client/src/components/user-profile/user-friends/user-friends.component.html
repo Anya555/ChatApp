@@ -16,7 +16,12 @@
           >
             Confirm
           </button>
-          <button class="btn btn-outline-primary">Delete</button>
+          <button
+            class="btn btn-outline-primary"
+            (click)="deleteFriendsRequest(pendingUser.id)"
+          >
+            Delete
+          </button>
         </div>
       </div>
     </div>

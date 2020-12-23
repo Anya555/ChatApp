@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/userContext';
 import { Observable } from 'rxjs';
+import { ThrowStmt } from '@angular/compiler';
 
 @Injectable()
 export class ApiService {
@@ -34,8 +35,10 @@ export class ApiService {
   };
 
   confirmFriendRequest = (id, isPending) => {
-    console.log(id);
-    console.log(isPending);
     return this.http.put('/api/users/user-profile/' + id, isPending);
+  };
+
+  deleteFriendsRequest = (id) => {
+    return this.http.delete('/api/users/user-profile/' + id);
   };
 }

@@ -173,10 +173,23 @@ module.exports = {
 
   confirmFriendsRequest: async (req, res) => {
     try {
-      const newFriend = await db.UserFriends.update(req.body, {
+      const friendRequestToAccept = await db.UserFriends.update(req.body, {
         where: { id: req.params.id },
       });
-      res.status(200).json(newFriend);
+      res.status(200).json(friendRequestToAccept);
+    } catch (error) {
+      return res.status(400).json(error);
+    }
+  },
+
+  deleteFriendsRequest: async (req, res) => {
+    try {
+      const friendRequestToDelete = await db.UserFriends.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+      res.status(200).json(friendRequestToDelete);
     } catch (error) {
       return res.status(400).json(error);
     }
