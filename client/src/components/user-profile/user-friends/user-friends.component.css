@@ -1,0 +1,11 @@
+h6 {
+  display: inline-block;
+  cursor: pointer;
+}
+.pending {
+  display: inline-block;
+}
+
+.btn {
+  margin-left: 5px;
+}

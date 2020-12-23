@@ -23,7 +23,7 @@ export class ApiService {
     return this.http.get('/api/users');
   };
 
-  addFriend = (userId, friendId) => {
+  sendFriendRequest = (userId, friendId) => {
     return this.http.post(`/api/users/user-profile/${userId}/friend`, {
       friendId,
     });
@@ -31,5 +31,11 @@ export class ApiService {
 
   findUserFriendsById = (id) => {
     return this.http.get('/api/users/friend-profile/' + id);
+  };
+
+  confirmFriendRequest = (id, isPending) => {
+    console.log(id);
+    console.log(isPending);
+    return this.http.put('/api/users/user-profile/' + id, isPending);
   };
 }

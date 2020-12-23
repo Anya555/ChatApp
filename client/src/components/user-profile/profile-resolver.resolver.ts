@@ -5,18 +5,27 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { ApiService } from '../../../src/utils/api/api.service';
+import { UserContext } from '../../app/userContext';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileResolver implements Resolve<boolean> {
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private userContext: UserContext
+  ) {}
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> {
-    return this.apiService.findAllUsers();
+    return forkJoin({
+      users: this.apiService.findAllUsers(),
+      userFriends: this.apiService.findUserFriendsById(
+        this.userContext.user.id
+      ),
+    });
   }
 }

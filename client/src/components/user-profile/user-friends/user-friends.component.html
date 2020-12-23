@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="col-md-4 col-sm-12">
+    <br />
+    <div class="card">
+      <div class="card-header text-center">
+        <h6>Friends</h6>
+        |
+        <h6>Friends requests</h6>
+      </div>
+      <div class="card-body">
+        <div *ngFor="let pendingUser of pendingUsers" class="pending">
+          {{ pendingUser.firstName + " " + pendingUser.lastName }}
+          <button
+            class="btn btn-outline-primary"
+            (click)="confirmFriendsRequest(pendingUser.id)"
+          >
+            Confirm
+          </button>
+          <button class="btn btn-outline-primary">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -29,19 +29,25 @@ export class FriendProfileComponent implements OnInit {
       let friend = data.data.userFriends.find(
         (userFriend) => this.friendId === userFriend.friendId
       );
-      if (friend) {
+      console.log(friend);
+      if (!friend) {
+        this.isFriend = 'Add friend';
+        this.disabled = false;
+      }
+
+      if (friend.isPending) {
         this.isFriend = 'Pending friend request';
         this.disabled = true;
       } else {
-        this.isFriend = 'Add friend';
-        this.disabled = false;
+        this.isFriend = 'Friends';
+        this.disabled = true;
       }
     });
   }
 
-  addFriend(): void {
+  sendFriendRequest(): void {
     this.apiService
-      .addFriend(this.userContext.user.id, this.friendId)
+      .sendFriendRequest(this.userContext.user.id, this.friendId)
       .subscribe((friend: User) => {
         this.isFriend = 'Pending friend request';
         this.disabled = true;

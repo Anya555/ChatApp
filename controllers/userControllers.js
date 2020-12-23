@@ -144,11 +144,12 @@ module.exports = {
     }
   },
 
-  addFriend: async (req, res) => {
+  sendFriendRequest: async (req, res) => {
     try {
       const newFriend = {
         userId: req.params.id,
         friendId: req.body.friendId,
+        isPending: true,
       };
       await db.UserFriends.create(newFriend);
       res.status(200).json(newFriend);
@@ -167,6 +168,17 @@ module.exports = {
       res.status(200).json(userFriends);
     } catch (error) {
       return res.status(400).json({ status: "User does not exist" });
+    }
+  },
+
+  confirmFriendsRequest: async (req, res) => {
+    try {
+      const newFriend = await db.UserFriends.update(req.body, {
+        where: { id: req.params.id },
+      });
+      res.status(200).json(newFriend);
+    } catch (error) {
+      return res.status(400).json(error);
     }
   },
 };
