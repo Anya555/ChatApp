@@ -29,13 +29,11 @@ export class FriendProfileComponent implements OnInit {
       let friend = data.data.userFriends.find(
         (userFriend) => this.friendId === userFriend.friendId
       );
-      console.log(friend);
+
       if (!friend) {
         this.isFriend = 'Add friend';
         this.disabled = false;
-      }
-
-      if (friend.isPending) {
+      } else if (friend.isPending) {
         this.isFriend = 'Pending friend request';
         this.disabled = true;
       } else {

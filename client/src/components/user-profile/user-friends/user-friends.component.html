@@ -3,25 +3,32 @@
     <br />
     <div class="card">
       <div class="card-header text-center">
-        <h6>Friends</h6>
+        <h6 (click)="showFriendsOrRequests(true)">Friends</h6>
         |
-        <h6>Friends requests</h6>
+        <h6 (click)="showFriendsOrRequests(false)">Friends requests</h6>
       </div>
       <div class="card-body">
-        <div *ngFor="let pendingUser of pendingUsers" class="pending">
-          {{ pendingUser.firstName + " " + pendingUser.lastName }}
-          <button
-            class="btn btn-outline-primary"
-            (click)="confirmFriendsRequest(pendingUser.id)"
-          >
-            Confirm
-          </button>
-          <button
-            class="btn btn-outline-primary"
-            (click)="deleteFriendsRequest(pendingUser.id)"
-          >
-            Delete
-          </button>
+        <div *ngIf="showFriends">
+          <div *ngFor="let friend of friends">
+            {{ friend.firstName + " " + friend.lastName }}
+          </div>
+        </div>
+        <div *ngIf="!showFriends">
+          <div *ngFor="let pendingUser of pendingUsers" class="pending">
+            {{ pendingUser.firstName + " " + pendingUser.lastName }}
+            <button
+              class="btn btn-outline-primary"
+              (click)="confirmFriendsRequest(pendingUser.id)"
+            >
+              Confirm
+            </button>
+            <button
+              class="btn btn-outline-primary"
+              (click)="deleteFriendsRequest(pendingUser.id)"
+            >
+              Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>

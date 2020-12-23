@@ -12,6 +12,10 @@ export class UserFriendsComponent implements OnInit {
   pendingRequests: UserFriend[] = [];
   pendingUsers: User[];
   userIds: number[] = [];
+  friends: User[];
+  confirmedRequests: UserFriend[];
+  showFriends: boolean = true;
+
   @Input() userFriends: UserFriend[];
   @Input() users: User[];
 
@@ -19,38 +23,60 @@ export class UserFriendsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPendingFriendsRequests();
+    this.getAllFriends();
   }
 
   getPendingFriendsRequests(): void {
     this.pendingRequests = this.userFriends.filter(
       (userFriend) => userFriend.isPending
     );
-    console.log(this.pendingRequests);
-
-    this.pendingRequests.forEach((request) =>
-      this.userIds.push(request.friendId)
-    );
 
     this.pendingUsers = this.users.filter((user) =>
-      this.userIds.includes(user.id)
+      this.pendingRequests.some((userFriend) => userFriend.friendId === user.id)
     );
   }
 
   confirmFriendsRequest(id): void {
-    let userToAdd = this.pendingRequests.find((user) => (user.friendId = id));
+    let userFriendToAdd: UserFriend = this.userFriends.find(
+      (user) => user.friendId === id
+    );
+
     this.apiService
-      .confirmFriendRequest(userToAdd.id, { isPending: false })
+      .confirmFriendRequest(userFriendToAdd.id, { isPending: false })
       .subscribe(() => {
-        console.log(this.pendingRequests);
+        userFriendToAdd.isPending = false;
         this.getPendingFriendsRequests();
       });
   }
 
   deleteFriendsRequest(id): void {
-    let userToDelete = this.pendingRequests.find(
-      (user) => (user.friendId = id)
+    let userFriendToDelete = this.userFriends.find(
+      (user) => user.friendId === id
     );
-    console.log(userToDelete);
-    this.apiService.deleteFriendsRequest(userToDelete.id).subscribe(() => {});
+
+    this.apiService
+      .deleteFriendsRequest(userFriendToDelete.id)
+      .subscribe(() => {
+        this.userFriends = this.userFriends.filter(
+          (userFriend) => userFriend !== userFriendToDelete
+        );
+        this.getPendingFriendsRequests();
+      });
+  }
+
+  getAllFriends(): void {
+    this.confirmedRequests = this.userFriends.filter(
+      (userFriend) => !userFriend.isPending
+    );
+
+    this.friends = this.users.filter((user) =>
+      this.confirmedRequests.some(
+        (userFriend) => userFriend.friendId === user.id
+      )
+    );
+  }
+
+  showFriendsOrRequests(bool: boolean): void {
+    this.showFriends = bool;
   }
 }

@@ -7,8 +7,8 @@ import { CommonComponentModule } from '../common/common.module';
 import { UserFriendsComponent } from './user-friends/user-friends.component';
 
 @NgModule({
+  imports: [CommonModule, FormsModule, ApiModule, CommonComponentModule],
   declarations: [UserProfileComponent, UserFriendsComponent],
   exports: [UserProfileComponent],
-  imports: [CommonModule, FormsModule, ApiModule, CommonComponentModule],
 })
 export class UserProfileModule {}
