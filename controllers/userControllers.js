@@ -121,19 +121,19 @@ module.exports = {
     }
   },
 
-  // allowIfLoggedin: async (req, res, next) => {
-  //   try {
-  //     const user = res.locals.loggedInUser; // res.locals.loggedInUser variable holds the details of the logged-in user
-  //     if (!user)
-  //       return res.status(401).json({
-  //         status: "You need to be logged in to access this route",
-  //       });
-  //     req.user = user;
-  //     next();
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // },
+  allowIfLoggedin: async (req, res, next) => {
+    try {
+      const user = res.locals.loggedInUser; // res.locals.loggedInUser variable holds the details of the logged-in user
+      if (!user)
+        return res.status(401).json({
+          status: "You need to be logged in to access this route",
+        });
+      req.user = user;
+      next();
+    } catch (error) {
+      next(error);
+    }
+  },
 
   getAllUsers: async (req, res) => {
     try {
@@ -167,7 +167,7 @@ module.exports = {
       });
       res.status(200).json(userFriends);
     } catch (error) {
-      return res.status(400).json({ status: "User does not exist" });
+      return res.status(400).json(error);
     }
   },
 
