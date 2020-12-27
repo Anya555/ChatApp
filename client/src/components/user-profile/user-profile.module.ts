@@ -5,9 +5,15 @@ import { FormsModule } from '@angular/forms';
 import { ApiModule } from '../../utils/api/api.module';
 import { CommonComponentModule } from '../common/common.module';
 import { UserFriendsComponent } from './user-friends/user-friends.component';
-
+import { MessengerModule } from '../messenger/messenger.module';
 @NgModule({
-  imports: [CommonModule, FormsModule, ApiModule, CommonComponentModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ApiModule,
+    CommonComponentModule,
+    MessengerModule,
+  ],
   declarations: [UserProfileComponent, UserFriendsComponent],
   exports: [UserProfileComponent],
 })

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import autocomplete from 'autocomplete.js';
 import { User, UserContext } from '../../../app/userContext';
@@ -9,9 +9,10 @@ import { User, UserContext } from '../../../app/userContext';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
+  @Input() isOpened: boolean;
   @Input() userName: string;
   @Input() users: User[];
-
+  @Output() isOpenedEvent = new EventEmitter<boolean>();
   constructor(
     public context: UserContext,
     private router: Router,
@@ -49,5 +50,10 @@ export class NavbarComponent implements OnInit {
   signOut(): void {
     localStorage.removeItem('authorizedUser');
     this.router.navigate(['login']);
+  }
+
+  openMessenger(): void {
+    this.isOpened = !this.isOpened;
+    this.isOpenedEvent.emit(this.isOpened);
   }
 }

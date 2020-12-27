@@ -10,6 +10,9 @@ import { UserFriend } from '../../../app/user-friend';
 export class UserProfileComponent implements OnInit {
   users: User[];
   userFriends: UserFriend[];
+  isOpened: boolean = false;
+  friends: User[];
+  confirmedRequests: UserFriend[];
 
   currentUserName =
     this.context.user.firstName + ' ' + this.context.user.lastName;
@@ -19,6 +22,23 @@ export class UserProfileComponent implements OnInit {
     this.route.data.subscribe((data) => {
       this.users = data.data.users;
       this.userFriends = data.data.userFriends;
+      this.getAllFriends();
     });
+  }
+
+  updateIsOpened(newValue: boolean): void {
+    this.isOpened = newValue;
+  }
+
+  getAllFriends(): void {
+    this.confirmedRequests = this.userFriends.filter(
+      (userFriend) => !userFriend.isPending
+    );
+
+    this.friends = this.users.filter((user) =>
+      this.confirmedRequests.some(
+        (userFriend) => userFriend.friendId === user.id
+      )
+    );
   }
 }

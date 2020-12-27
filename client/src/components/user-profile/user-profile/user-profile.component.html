@@ -1,5 +1,14 @@
-<app-navbar [userName]="currentUserName" [users]="users"> </app-navbar>
+<app-navbar
+  [userName]="currentUserName"
+  [users]="users"
+  [isOpened]="isOpened"
+  (isOpenedEvent)="updateIsOpened($event)"
+>
+</app-navbar>
 <app-user-friends
   [userFriends]="userFriends"
   [users]="users"
+  [friends]="friends"
+  (updateFriendsEvent)="getAllFriends()"
 ></app-user-friends>
+<app-messenger [isOpened]="isOpened" [friends]="friends"></app-messenger>

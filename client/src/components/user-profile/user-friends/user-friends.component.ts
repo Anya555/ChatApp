@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UserFriend } from '../../../app/user-friend';
 import { User, UserContext } from '../../../app/userContext';
 import { ApiService } from '../../../utils/api/api.service';
@@ -12,18 +12,16 @@ export class UserFriendsComponent implements OnInit {
   pendingRequests: UserFriend[] = [];
   pendingUsers: User[];
   userIds: number[] = [];
-  friends: User[];
-  confirmedRequests: UserFriend[];
   showFriends: boolean = true;
 
   @Input() userFriends: UserFriend[];
   @Input() users: User[];
-
+  @Input() friends: User[];
+  @Output() updateFriendsEvent = new EventEmitter<void>();
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.getPendingFriendsRequests();
-    this.getAllFriends();
   }
 
   getPendingFriendsRequests(): void {
@@ -46,6 +44,7 @@ export class UserFriendsComponent implements OnInit {
       .subscribe(() => {
         userFriendToAdd.isPending = false;
         this.getPendingFriendsRequests();
+        this.updateFriendsEvent.emit();
       });
   }
 
@@ -62,18 +61,6 @@ export class UserFriendsComponent implements OnInit {
         );
         this.getPendingFriendsRequests();
       });
-  }
-
-  getAllFriends(): void {
-    this.confirmedRequests = this.userFriends.filter(
-      (userFriend) => !userFriend.isPending
-    );
-
-    this.friends = this.users.filter((user) =>
-      this.confirmedRequests.some(
-        (userFriend) => userFriend.friendId === user.id
-      )
-    );
   }
 
   showFriendsOrRequests(bool: boolean): void {
