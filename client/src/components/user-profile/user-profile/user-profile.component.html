@@ -5,10 +5,19 @@
   (isOpenedEvent)="updateIsOpened($event)"
 >
 </app-navbar>
-<app-user-friends
-  [userFriends]="userFriends"
-  [users]="users"
-  [friends]="friends"
-  (updateFriendsEvent)="getAllFriends()"
-></app-user-friends>
-<app-messenger [isOpened]="isOpened" [friends]="friends"></app-messenger>
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-sm-12">
+      <app-user-friends
+        [userFriends]="userFriends"
+        [users]="users"
+        [friends]="friends"
+        (updateFriendsEvent)="getAllFriends()"
+      ></app-user-friends>
+    </div>
+    <div class="col-md-4 offset-sm-4 col-sm-12">
+      <app-messenger [isOpened]="isOpened" [friends]="friends"></app-messenger>
+    </div>
+  </div>
+</div>

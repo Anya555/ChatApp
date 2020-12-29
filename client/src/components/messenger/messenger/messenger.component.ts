@@ -13,4 +13,12 @@ export class MessengerComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  searchFriends(f: NgForm): void {
+    this.filteredFriends = this.friends.filter(
+      (user) =>
+        user.firstName.toLowerCase().includes(f.value.search.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(f.value.search.toLowerCase())
+    );
+  }
 }

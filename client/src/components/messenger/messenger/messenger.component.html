@@ -1,9 +1,17 @@
-<div class="container" *ngIf="isOpened">
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-body"></div>
-      </div>
-    </div>
+<div class="card" *ngIf="isOpened">
+  <div class="card-body">
+    <form #f="ngForm" autocomplete="off">
+      <input
+        type="search"
+        name="search"
+        class="form-control mr-sm-2 search"
+        placeholder="Search friends"
+        ngModel
+        (ngModelChange)="searchFriends(f)"
+      />
+    </form>
+    <p *ngFor="let friend of filteredFriends">
+      {{ friend.firstName + " " + friend.lastName }}
+    </p>
   </div>
 </div>
