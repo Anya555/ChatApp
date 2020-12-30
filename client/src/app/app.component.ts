@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { SocketIoService } from '../utils/api/socket.io.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,10 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'client';
+  socketTitle = 'socketio-angular';
+  constructor(private socketService: SocketIoService) {}
 
   ngOnInit(): void {
     window.addEventListener('error', function (event) {
       console.log(event);
     });
+    this.socketService.setupSocketConnection();
   }
 }

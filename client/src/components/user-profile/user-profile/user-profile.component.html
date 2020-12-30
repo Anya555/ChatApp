@@ -1,8 +1,9 @@
 <app-navbar
   [userName]="currentUserName"
   [users]="users"
-  [isOpened]="isOpened"
-  (isOpenedEvent)="updateIsOpened($event)"
+  [isMessengerOpened]="isMessengerOpened"
+  (isMessengerOpenedEvent)="updateIsMessengerOpened($event)"
+  (isChatRoomOpenedEvent)="updateIsChatRoomOpened($event)"
 >
 </app-navbar>
 <br />
@@ -16,8 +17,20 @@
         (updateFriendsEvent)="getAllFriends()"
       ></app-user-friends>
     </div>
-    <div class="col-md-4 offset-sm-4 col-sm-12">
-      <app-messenger [isOpened]="isOpened" [friends]="friends"></app-messenger>
+    <div class="col-md-4 offset-sm-4 col-sm-12" *ngIf="isMessengerOpened">
+      <app-messenger
+        [isMessengerOpened]="isMessengerOpened"
+        [friends]="friends"
+        [isChatRoomOpened]="isChatRoomOpened"
+        (isMessengerOpenedEvent)="updateIsMessengerOpened($event)"
+        (isChatRoomOpenedEvent)="updateIsChatRoomOpened($event)"
+      ></app-messenger>
+    </div>
+    <div class="col-md-4 offset-sm-4 col-sm-12" *ngIf="isChatRoomOpened">
+      <app-chat-room
+        [isChatRoomOpened]="isChatRoomOpened"
+        (isChatRoomOpenedEvent)="updateIsChatRoomOpened($event)"
+      ></app-chat-room>
     </div>
   </div>
 </div>

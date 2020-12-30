@@ -7,6 +7,7 @@ const db = require("./models");
 const PORT = process.env.PORT || 3001;
 const jwt = require("jsonwebtoken");
 const User = require("./models").User;
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -41,7 +42,20 @@ if (process.env.NODE_ENV == "production") {
 app.use(routes);
 
 db.sequelize.sync().then(function () {
-  app.listen(PORT, function () {
+  const server = app.listen(PORT, function () {
     console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
+  });
+
+  const options = {
+    cors: true,
+    origins: ["http://localhost:3001"],
+  };
+  const io = require("socket.io")(server, options);
+
+  io.on("connection", (socket) => {
+    console.log("a user connected");
+    socket.on("disconnect", () => {
+      console.log("user disconnected");
+    });
   });
 });

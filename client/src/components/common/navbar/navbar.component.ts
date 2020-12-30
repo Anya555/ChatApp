@@ -9,10 +9,11 @@ import { User, UserContext } from '../../../app/userContext';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  @Input() isOpened: boolean;
+  @Input() isMessengerOpened: boolean;
   @Input() userName: string;
   @Input() users: User[];
-  @Output() isOpenedEvent = new EventEmitter<boolean>();
+  @Output() isMessengerOpenedEvent = new EventEmitter<boolean>();
+  @Output() isChatRoomOpenedEvent = new EventEmitter<boolean>();
   constructor(
     public context: UserContext,
     private router: Router,
@@ -53,7 +54,8 @@ export class NavbarComponent implements OnInit {
   }
 
   openMessenger(): void {
-    this.isOpened = !this.isOpened;
-    this.isOpenedEvent.emit(this.isOpened);
+    this.isMessengerOpened = !this.isMessengerOpened;
+    this.isMessengerOpenedEvent.emit(this.isMessengerOpened);
+    this.isChatRoomOpenedEvent.emit(false);
   }
 }

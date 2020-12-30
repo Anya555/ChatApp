@@ -1,4 +1,4 @@
-<div class="card" *ngIf="isOpened">
+<div class="card">
   <div class="card-body">
     <form #f="ngForm" autocomplete="off">
       <input
@@ -10,8 +10,10 @@
         (ngModelChange)="searchFriends(f)"
       />
     </form>
-    <p *ngFor="let friend of filteredFriends">
-      {{ friend.firstName + " " + friend.lastName }}
-    </p>
+    <div *ngFor="let friend of filteredFriends">
+      <p (click)="openPrivateChat()">
+        {{ friend.firstName + " " + friend.lastName }}
+      </p>
+    </div>
   </div>
 </div>

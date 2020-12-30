@@ -10,15 +10,17 @@ import { UserFriend } from '../../../app/user-friend';
 export class UserProfileComponent implements OnInit {
   users: User[];
   userFriends: UserFriend[];
-  isOpened: boolean = false;
+  isMessengerOpened: boolean = false;
   friends: User[];
   confirmedRequests: UserFriend[];
+  isChatRoomOpened: boolean = false;
+  currentUserName: string;
 
-  currentUserName =
-    this.context.user.firstName + ' ' + this.context.user.lastName;
   constructor(public context: UserContext, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.currentUserName =
+      this.context.user.firstName + ' ' + this.context.user.lastName;
     this.route.data.subscribe((data) => {
       this.users = data.data.users;
       this.userFriends = data.data.userFriends;
@@ -26,8 +28,11 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  updateIsOpened(newValue: boolean): void {
-    this.isOpened = newValue;
+  updateIsMessengerOpened(newValue: boolean): void {
+    this.isMessengerOpened = newValue;
+  }
+  updateIsChatRoomOpened(newValue: boolean): void {
+    this.isChatRoomOpened = newValue;
   }
 
   getAllFriends(): void {

@@ -4,6 +4,7 @@ import { ApiService } from './api.service';
 import { TokenInterceptor } from './interceptors';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ServerErrorInterceptor } from './error-interceptor';
+import { SocketIoService } from './socket.io.service';
 @NgModule({
   declarations: [],
   providers: [
@@ -14,6 +15,7 @@ import { ServerErrorInterceptor } from './error-interceptor';
       useClass: ServerErrorInterceptor,
       multi: true,
     },
+    SocketIoService,
   ],
   imports: [CommonModule],
 })
