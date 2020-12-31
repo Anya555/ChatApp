@@ -16,7 +16,9 @@ export class ChatRoomComponent implements OnInit {
     private userContext: UserContext
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getChatHistory();
+  }
   closePrivateChatRoom(): void {
     this.isChatRoomOpened = false;
     this.isChatRoomOpenedEvent.emit(this.isChatRoomOpened);
@@ -28,9 +30,17 @@ export class ChatRoomComponent implements OnInit {
       userId: this.userContext.user.id,
       friendId: this.friendId,
     };
-    console.log(messageData);
+
     this.apiService.saveMessageToDB(messageData).subscribe((data) => {
       console.log(data);
     });
+  }
+
+  getChatHistory(): void {
+    this.apiService
+      .getChatHistory(this.userContext.user.id, this.friendId)
+      .subscribe((data) => {
+        console.log(data);
+      });
   }
 }

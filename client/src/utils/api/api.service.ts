@@ -45,4 +45,10 @@ export class ApiService {
   saveMessageToDB = (message) => {
     return this.http.post('/api/messenger', message);
   };
+
+  getChatHistory = (userId, friendId) => {
+    console.log(userId);
+    console.log(friendId);
+    return this.http.get(`/api/messenger/user/${userId}/friend/${friendId}`);
+  };
 }
