@@ -15,6 +15,7 @@ export class UserProfileComponent implements OnInit {
   confirmedRequests: UserFriend[];
   isChatRoomOpened: boolean = false;
   currentUserName: string;
+  friendId: number;
 
   constructor(public context: UserContext, private route: ActivatedRoute) {}
 
@@ -45,5 +46,9 @@ export class UserProfileComponent implements OnInit {
         (userFriend) => userFriend.friendId === user.id
       )
     );
+  }
+
+  getFriendId(id: number): void {
+    this.friendId = id;
   }
 }

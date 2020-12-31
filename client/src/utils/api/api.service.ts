@@ -41,4 +41,8 @@ export class ApiService {
   deleteFriendsRequest = (id) => {
     return this.http.delete('/api/users/user-profile/' + id);
   };
+
+  saveMessageToDB = (message) => {
+    return this.http.post('/api/messenger', message);
+  };
 }

@@ -24,12 +24,14 @@
         [isChatRoomOpened]="isChatRoomOpened"
         (isMessengerOpenedEvent)="updateIsMessengerOpened($event)"
         (isChatRoomOpenedEvent)="updateIsChatRoomOpened($event)"
+        (getFriendIdEvent)="getFriendId($event)"
       ></app-messenger>
     </div>
     <div class="col-md-4 offset-sm-4 col-sm-12" *ngIf="isChatRoomOpened">
       <app-chat-room
         [isChatRoomOpened]="isChatRoomOpened"
         (isChatRoomOpenedEvent)="updateIsChatRoomOpened($event)"
+        [friendId]="friendId"
       ></app-chat-room>
     </div>
   </div>

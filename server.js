@@ -41,21 +41,23 @@ if (process.env.NODE_ENV == "production") {
 }
 app.use(routes);
 
-db.sequelize.sync().then(function () {
-  const server = app.listen(PORT, function () {
+db.sequelize.sync().then(() => {
+  const server = app.listen(PORT, () => {
     console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
   });
 
+  // enable CORS to use socket.io
   const options = {
     cors: true,
     origins: ["http://localhost:3001"],
   };
-  const io = require("socket.io")(server, options);
 
+  const io = require("socket.io")(server, options);
   io.on("connection", (socket) => {
     console.log("a user connected");
-    socket.on("disconnect", () => {
-      console.log("user disconnected");
+
+    socket.on("message", (msg) => {
+      io.emit("my broadcast", `server: ${msg}`);
     });
   });
 });

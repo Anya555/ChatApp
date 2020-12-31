@@ -13,6 +13,7 @@ export class MessengerComponent implements OnInit {
   @Input() isChatRoomOpened: boolean;
   @Output() isMessengerOpenedEvent = new EventEmitter<boolean>();
   @Output() isChatRoomOpenedEvent = new EventEmitter<boolean>();
+  @Output() getFriendIdEvent = new EventEmitter<number>();
   constructor() {}
 
   ngOnInit(): void {}
@@ -28,10 +29,11 @@ export class MessengerComponent implements OnInit {
     }
   }
 
-  openPrivateChat(): void {
+  openPrivateChat(id): void {
     this.isChatRoomOpened = true;
     this.isMessengerOpened = false;
     this.isMessengerOpenedEvent.emit(this.isMessengerOpened);
     this.isChatRoomOpenedEvent.emit(this.isChatRoomOpened);
+    this.getFriendIdEvent.emit(id);
   }
 }
