@@ -9,8 +9,7 @@ export class SocketIoService {
   constructor() {}
   setupSocketConnection() {
     this.socket = io(environment.SOCKET_ENDPOINT);
-    this.socket.emit('message', 'Hello there from Angular.');
-    this.socket.on('my broadcast', (data: string) => {
+    this.socket.on('message', (data: string) => {
       console.log(data);
     });
   }

@@ -7,6 +7,14 @@ const db = require("./models");
 const PORT = process.env.PORT || 3001;
 const jwt = require("jsonwebtoken");
 const User = require("./models").User;
+const server = app.listen(PORT, () => {});
+
+// enable CORS to use socket.io
+const options = {
+  cors: true,
+  origins: ["http://localhost:3001"],
+};
+const io = require("socket.io")(server, options);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -41,23 +49,14 @@ if (process.env.NODE_ENV == "production") {
 }
 app.use(routes);
 
+// connect to sequelize
 db.sequelize.sync().then(() => {
-  const server = app.listen(PORT, () => {
-    console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
-  });
-
-  // enable CORS to use socket.io
-  const options = {
-    cors: true,
-    origins: ["http://localhost:3001"],
-  };
-
-  const io = require("socket.io")(server, options);
-  io.on("connection", (socket) => {
-    console.log("a user connected");
-
-    socket.on("message", (msg) => {
-      io.emit("my broadcast", `server: ${msg}`);
-    });
-  });
+  console.log("sequelize connected");
 });
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+});
+
+// export socket.io to a global
+app.set("socketio", io);

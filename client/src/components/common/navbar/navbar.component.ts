@@ -21,8 +21,6 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // find all registered users
-
     autocomplete('#search', { hint: true }, [
       {
         source: (inputValue, callBack) => {
