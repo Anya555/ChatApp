@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/userContext';
 import { Observable } from 'rxjs';
-import { ThrowStmt } from '@angular/compiler';
 
 @Injectable()
 export class ApiService {
@@ -46,9 +45,9 @@ export class ApiService {
     return this.http.post('/api/messenger', message);
   };
 
-  getChatHistory = (userId, friendId) => {
-    console.log(userId);
-    console.log(friendId);
-    return this.http.get(`/api/messenger/user/${userId}/friend/${friendId}`);
+  getChatHistory = (senderId, receiverId) => {
+    return this.http.get(
+      `/api/messenger/user/${senderId}/friend/${receiverId}`
+    );
   };
 }

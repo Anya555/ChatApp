@@ -3,6 +3,6 @@ const messengerController = require("../../controllers/messengerControllers");
 
 router.route("/").post(messengerController.saveMessage);
 router
-  .route("/user/:userId/friend/:friendId")
+  .route("/user/:senderId/friend/:receiverId")
   .get(messengerController.findChatHistory);
 module.exports = router;

@@ -5,7 +5,16 @@
       (click)="closePrivateChatRoom()"
     />
   </div>
-  <div class="card-body">
+  <div class="card-body" *ngFor="let message of messages">
+    <div *ngIf="message.isMessageSentByUser">
+      <p>{{ user.firstName }} {{ user.lastName }}</p>
+    </div>
+    <div *ngIf="!message.isMessageSentByUser">
+      <p>{{ friend.firstName }} {{ friend.lastName }}</p>
+    </div>
+    <p>{{ message.message }}</p>
+  </div>
+  <div class="card-footer">
     <form #f="ngForm" (ngSubmit)="onSubmit(f)">
       <input
         class="form-control mr-sm-2 search"

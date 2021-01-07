@@ -51,7 +51,7 @@ app.use(routes);
 
 // connect to sequelize
 db.sequelize.sync().then(() => {
-  console.log("sequelize connected");
+  console.log("connected to sequelize");
 });
 
 io.on("connection", (socket) => {

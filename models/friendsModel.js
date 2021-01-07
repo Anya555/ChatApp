@@ -3,8 +3,6 @@ module.exports = function (sequelize, DataTypes) {
     friendId: DataTypes.BIGINT,
     isPending: DataTypes.BOOLEAN,
   });
-  // UserFriends.associate = function (models) {
-  //   UserFriends.hasMany(models.Messages, { foreignKey: "friendId" });
-  // };
+
   return UserFriends;
 };

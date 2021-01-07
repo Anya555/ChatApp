@@ -2,23 +2,36 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ApiService } from '../../../utils/api/api.service';
 import { User, UserContext } from '../../../app/userContext';
+import { SocketIoService } from '../../../utils/api/socket.io.service';
+import { Message } from '../../../app/message';
+
 @Component({
   selector: 'app-chat-room',
   templateUrl: './chat-room.component.html',
   styleUrls: ['./chat-room.component.css'],
 })
 export class ChatRoomComponent implements OnInit {
+  messages: Message[];
+  user: User;
+  friend: User;
+
   @Input() isChatRoomOpened: boolean;
   @Input() friendId: number;
   @Output() isChatRoomOpenedEvent = new EventEmitter<boolean>();
   constructor(
     private apiService: ApiService,
-    private userContext: UserContext
+    private userContext: UserContext,
+    private socketIoService: SocketIoService
   ) {}
 
   ngOnInit(): void {
+    this.socketIoService.socket.on('message', (message: Message) => {
+      this.messages.push(message);
+      this.isMessageSentByUserOrFriend();
+    });
     this.getChatHistory();
   }
+
   closePrivateChatRoom(): void {
     this.isChatRoomOpened = false;
     this.isChatRoomOpenedEvent.emit(this.isChatRoomOpened);
@@ -27,20 +40,33 @@ export class ChatRoomComponent implements OnInit {
   onSubmit(f: NgForm): void {
     let messageData = {
       message: f.value.message,
-      userId: this.userContext.user.id,
-      friendId: this.friendId,
+      senderId: this.userContext.user.id,
+      receiverId: this.friendId,
     };
 
-    this.apiService.saveMessageToDB(messageData).subscribe((data) => {
-      console.log(data);
+    this.apiService.saveMessageToDB(messageData).subscribe(() => {
+      f.reset();
     });
   }
 
   getChatHistory(): void {
     this.apiService
       .getChatHistory(this.userContext.user.id, this.friendId)
-      .subscribe((data) => {
-        console.log(data);
+      .subscribe((data: { messages: Message[]; user: User; friend: User }) => {
+        this.messages = data.messages;
+        this.user = data.user;
+        this.friend = data.friend;
+        this.isMessageSentByUserOrFriend();
       });
+  }
+
+  isMessageSentByUserOrFriend(): void {
+    this.messages.forEach((message) => {
+      if (message.senderId === this.user.id) {
+        message.isMessageSentByUser = true;
+      } else {
+        message.isMessageSentByUser = false;
+      }
+    });
   }
 }
