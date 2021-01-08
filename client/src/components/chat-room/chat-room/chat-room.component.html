@@ -7,12 +7,19 @@
   </div>
   <div class="card-body" *ngFor="let message of messages">
     <div *ngIf="message.isMessageSentByUser">
-      <p>{{ user.firstName }} {{ user.lastName }}</p>
+      <p class="userName">{{ user.firstName }} {{ user.lastName }}</p>
     </div>
     <div *ngIf="!message.isMessageSentByUser">
-      <p>{{ friend.firstName }} {{ friend.lastName }}</p>
+      <p class="userName messageSentByFriend">
+        {{ friend.firstName }} {{ friend.lastName }}
+      </p>
     </div>
-    <p>{{ message.message }}</p>
+    <br style="clear: both" />
+    <div [ngStyle]="{ float: !message.isMessageSentByUser ? 'right' : 'left' }">
+      <p>
+        {{ message.message }}
+      </p>
+    </div>
   </div>
   <div class="card-footer">
     <form #f="ngForm" (ngSubmit)="onSubmit(f)">

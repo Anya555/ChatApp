@@ -18,7 +18,10 @@ export class UserFriendsComponent implements OnInit {
   @Input() users: User[];
   @Input() friends: User[];
   @Output() updateFriendsEvent = new EventEmitter<void>();
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private userContext: UserContext
+  ) {}
 
   ngOnInit(): void {
     this.getPendingFriendsRequests();
@@ -26,17 +29,18 @@ export class UserFriendsComponent implements OnInit {
 
   getPendingFriendsRequests(): void {
     this.pendingRequests = this.userFriends.filter(
-      (userFriend) => userFriend.isPending
+      (userFriend) =>
+        userFriend.isPending && userFriend.userId !== this.userContext.user.id
     );
 
     this.pendingUsers = this.users.filter((user) =>
-      this.pendingRequests.some((userFriend) => userFriend.friendId === user.id)
+      this.pendingRequests.some((userFriend) => userFriend.userId === user.id)
     );
   }
 
   confirmFriendsRequest(id): void {
     let userFriendToAdd: UserFriend = this.userFriends.find(
-      (user) => user.friendId === id
+      (user) => user.userId === id
     );
 
     this.apiService
@@ -50,7 +54,7 @@ export class UserFriendsComponent implements OnInit {
 
   deleteFriendsRequest(id): void {
     let userFriendToDelete = this.userFriends.find(
-      (user) => user.friendId === id
+      (userFriend) => userFriend.userId === id
     );
 
     this.apiService

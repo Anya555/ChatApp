@@ -1,8 +1,10 @@
 <div class="card">
   <div class="card-header text-center">
-    <h6 (click)="showFriendsOrRequests(true)">Friends</h6>
+    <h6 (click)="showFriendsOrRequests(true)">Friends {{ friends.length }}</h6>
     |
-    <h6 (click)="showFriendsOrRequests(false)">Friends requests</h6>
+    <h6 (click)="showFriendsOrRequests(false)">
+      Friends requests {{ pendingUsers.length }}
+    </h6>
   </div>
   <div class="card-body">
     <div *ngIf="showFriends">

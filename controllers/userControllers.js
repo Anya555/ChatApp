@@ -2,7 +2,7 @@ const User = require("../models").User;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const db = require("../models");
-
+const Op = require("Sequelize").Op;
 async function hashPassword(password) {
   return await bcrypt.hash(password, 10);
 }
@@ -162,9 +162,10 @@ module.exports = {
     try {
       const userFriends = await db.UserFriends.findAll({
         where: {
-          userId: req.params.id,
+          [Op.or]: [{ userId: req.params.id }, { friendId: req.params.id }],
         },
       });
+
       res.status(200).json(userFriends);
     } catch (error) {
       return res.status(400).json(error);

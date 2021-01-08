@@ -42,9 +42,7 @@ export class UserProfileComponent implements OnInit {
     );
 
     this.friends = this.users.filter((user) =>
-      this.confirmedRequests.some(
-        (userFriend) => userFriend.friendId === user.id
-      )
+      this.confirmedRequests.some((userFriend) => userFriend.userId === user.id)
     );
   }
 

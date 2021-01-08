@@ -1,3 +1,13 @@
 img {
   float: right;
 }
+.userName {
+  font-weight: bold;
+}
+
+.messageSentByFriend {
+  float: right;
+}
+.messageSentByFriend.clear {
+  clear: left;
+}
