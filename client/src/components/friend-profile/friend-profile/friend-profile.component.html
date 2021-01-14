@@ -1,5 +1,19 @@
 <app-navbar [userName]="currentUserName" [users]="users">
-  <button (click)="sendFriendRequest()" class="btn" [disabled]="disabled">
-    {{ isFriend }}
+  <button
+    *ngIf="!friend"
+    (click)="sendFriendRequest()"
+    class="btn"
+    [disabled]="disabled"
+  >
+    Add Friend
   </button>
+  <button
+    *ngIf="friend && friend.isPending"
+    (click)="cancelFriendsRequest()"
+    class="btn"
+    [disabled]="disabled"
+  >
+    Cancel Friends Request
+  </button>
+  <p *ngIf="friend && !friend.isPending">Friends</p>
 </app-navbar>

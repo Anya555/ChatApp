@@ -25,6 +25,7 @@ export class UserProfileComponent implements OnInit {
     this.route.data.subscribe((data) => {
       this.users = data.data.users;
       this.userFriends = data.data.userFriends;
+      console.log(this.userFriends);
       this.getAllFriends();
     });
   }
@@ -41,8 +42,13 @@ export class UserProfileComponent implements OnInit {
       (userFriend) => !userFriend.isPending
     );
 
-    this.friends = this.users.filter((user) =>
-      this.confirmedRequests.some((userFriend) => userFriend.userId === user.id)
+    this.friends = this.users.filter(
+      (user) =>
+        user.id !== this.context.user.id &&
+        this.confirmedRequests.some(
+          (userFriend) =>
+            userFriend.userId === user.id || userFriend.friendId === user.id
+        )
     );
   }
 

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../utils/api/api.service';
 import { User, UserContext } from '../../../app/userContext';
+import { UserFriend } from '../../../app/user-friend';
+
 @Component({
   selector: 'app-friend-profile',
   templateUrl: './friend-profile.component.html',
@@ -13,6 +15,7 @@ export class FriendProfileComponent implements OnInit {
   isFriend: string;
   disabled: boolean;
   users: User[];
+  friend: UserFriend;
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
@@ -26,29 +29,30 @@ export class FriendProfileComponent implements OnInit {
       this.currentUserName =
         data.data.user.firstName + ' ' + data.data.user.lastName;
 
-      let friend = data.data.userFriends.find(
-        (userFriend) => this.friendId === userFriend.friendId
+      this.friend = data.data.userFriends.find(
+        (userFriend) =>
+          this.friendId === userFriend.friendId ||
+          this.friendId === userFriend.userId
       );
-
-      if (!friend) {
-        this.isFriend = 'Add friend';
-        this.disabled = false;
-      } else if (friend.isPending) {
-        this.isFriend = 'Pending friend request';
-        this.disabled = true;
-      } else {
-        this.isFriend = 'Friends';
-        this.disabled = true;
-      }
     });
   }
 
   sendFriendRequest(): void {
+    this.disabled = true;
+
     this.apiService
       .sendFriendRequest(this.userContext.user.id, this.friendId)
-      .subscribe((friend: User) => {
-        this.isFriend = 'Pending friend request';
-        this.disabled = true;
+      .subscribe((friend: UserFriend) => {
+        this.friend = friend;
+        this.disabled = false;
       });
+  }
+
+  cancelFriendsRequest(): void {
+    this.disabled = true;
+    this.apiService.deleteFriendsRequest(this.friend.id).subscribe(() => {
+      this.friend = undefined;
+      this.disabled = false;
+    });
   }
 }
