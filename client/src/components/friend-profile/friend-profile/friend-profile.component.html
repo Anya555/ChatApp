@@ -9,11 +9,51 @@
   </button>
   <button
     *ngIf="friend && friend.isPending"
-    (click)="cancelFriendsRequest()"
+    (click)="cancelFriendsRequestOrUnfriend()"
     class="btn"
     [disabled]="disabled"
   >
     Cancel Friends Request
   </button>
-  <p *ngIf="friend && !friend.isPending">Friends</p>
+  <p
+    *ngIf="friend && !friend.isPending"
+    (click)="cancelFriendsRequestOrUnfriend()"
+  >
+    Unfriend
+  </p>
 </app-navbar>
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h6 (click)="showFriendsOrMutualFriends(true)">
+            Friends {{ friendsOfFriend.length }}
+          </h6>
+          |
+          <h6 (click)="showFriendsOrMutualFriends(false)">
+            Mutual Friends {{ mutualFriends.length }}
+          </h6>
+        </div>
+
+        <div class="card-body">
+          <div *ngIf="showFriends">
+            <div *ngFor="let friend of friendsOfFriend">
+              <p (click)="navigateToUsersPage(friend.id)">
+                {{ friend.firstName }} {{ friend.lastName }}
+              </p>
+            </div>
+          </div>
+          <div *ngIf="!showFriends">
+            <div *ngFor="let friend of mutualFriends">
+              <p (click)="navigateToUsersPage(friend.id)">
+                {{ friend.firstName }} {{ friend.lastName }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

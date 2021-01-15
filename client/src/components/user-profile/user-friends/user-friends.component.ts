@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UserFriend } from '../../../app/user-friend';
 import { User, UserContext } from '../../../app/userContext';
 import { ApiService } from '../../../utils/api/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-friends',
@@ -20,7 +21,8 @@ export class UserFriendsComponent implements OnInit {
   @Output() updateFriendsEvent = new EventEmitter<void>();
   constructor(
     private apiService: ApiService,
-    private userContext: UserContext
+    private userContext: UserContext,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -69,5 +71,9 @@ export class UserFriendsComponent implements OnInit {
 
   showFriendsOrRequests(bool: boolean): void {
     this.showFriends = bool;
+  }
+
+  navigateToUsersPage(id): void {
+    this.router.navigate(['friend-profile/', id]);
   }
 }

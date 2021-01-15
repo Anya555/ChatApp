@@ -1,5 +1,6 @@
 const db = require("../models");
 const Op = require("Sequelize").Op;
+
 module.exports = {
   saveMessage: async (req, res) => {
     try {

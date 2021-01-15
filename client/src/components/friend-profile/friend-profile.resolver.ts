@@ -26,6 +26,7 @@ export class FriendProfileResolver implements Resolve<boolean> {
         this.userContext.user.id
       ),
       users: this.apiService.findAllUsers(),
+      friendsOfFriend: this.apiService.findUserFriendsById(route.params.id),
     });
   }
 }

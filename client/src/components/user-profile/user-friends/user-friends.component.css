@@ -9,3 +9,7 @@ h6 {
 .btn {
   margin-left: 5px;
 }
+
+.user {
+  cursor: pointer;
+}

@@ -11,7 +11,7 @@
       />
     </form>
     <div *ngFor="let friend of filteredFriends">
-      <p (click)="openPrivateChat(friend.id)">
+      <p (click)="openPrivateChat(friend.id)" class="friend">
         {{ friend.firstName + " " + friend.lastName }}
       </p>
     </div>

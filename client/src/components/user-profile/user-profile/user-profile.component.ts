@@ -25,7 +25,6 @@ export class UserProfileComponent implements OnInit {
     this.route.data.subscribe((data) => {
       this.users = data.data.users;
       this.userFriends = data.data.userFriends;
-      console.log(this.userFriends);
       this.getAllFriends();
     });
   }
