@@ -1,5 +1,5 @@
 const db = require("../models");
-const Op = require("Sequelize").Op;
+const Op = require("sequelize").Op;
 
 module.exports = {
   saveMessage: async (req, res) => {
@@ -12,7 +12,7 @@ module.exports = {
       res.status(400).json(error);
     }
   },
-
+  // chat between two users
   findChatHistory: async (req, res) => {
     try {
       const messages = await db.Messages.findAll({
@@ -35,6 +35,19 @@ module.exports = {
       res.status(200).json({ messages, user, friend });
     } catch (error) {
       res.status(400).json(error);
+    }
+  },
+  // all chats for logged in user
+  findAllUserChats: async (req, res) => {
+    try {
+      const messages = await db.Messages.findAll({
+        where: {
+          [Op.or]: [{ senderId: req.params.id }, { receiverId: req.params.id }],
+        },
+      });
+      res.status(200).json(messages);
+    } catch (error) {
+      res.status(400).json(error.message);
     }
   },
 };

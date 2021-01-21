@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User, UserContext } from '../../../app/userContext';
 import { UserFriend } from '../../../app/user-friend';
+import { Message } from '../../../app/message';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -16,6 +17,7 @@ export class UserProfileComponent implements OnInit {
   isChatRoomOpened: boolean = false;
   currentUserName: string;
   friendId: number;
+  userChats: Message[];
 
   constructor(public context: UserContext, private route: ActivatedRoute) {}
 
@@ -25,6 +27,7 @@ export class UserProfileComponent implements OnInit {
     this.route.data.subscribe((data) => {
       this.users = data.data.users;
       this.userFriends = data.data.userFriends;
+      this.userChats = data.data.userChats;
       this.getAllFriends();
     });
   }

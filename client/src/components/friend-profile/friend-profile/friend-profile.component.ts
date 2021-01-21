@@ -42,6 +42,7 @@ export class FriendProfileComponent implements OnInit {
       );
 
       // =========================================================================== //
+      
       let confirmedRequestsOfFriend = data.data.friendsOfFriend.filter(
         (userFriend) => !userFriend.isPending
       );
@@ -60,6 +61,7 @@ export class FriendProfileComponent implements OnInit {
       let confirmedRequestsOfUser = data.data.userFriends.filter(
         (userFriend) => !userFriend.isPending
       );
+
       this.friendsOfUser = this.users.filter(
         (user) =>
           user.id !== this.userContext.user.id &&
@@ -70,7 +72,7 @@ export class FriendProfileComponent implements OnInit {
       );
 
       // =========================================================================== //
-
+    // get mutual friends between logged in user and a friend who's page he's currently on  
       this.mutualFriends = this.friendsOfUser.filter((user) =>
         this.friendsOfFriend.some((friend) => friend.id === user.id)
       );
@@ -99,7 +101,9 @@ export class FriendProfileComponent implements OnInit {
     this.router.navigate(['friend-profile/', id]);
   }
 
+
   showFriendsOrMutualFriends(bool: boolean): void {
+    // if true -> all friends will be displayed, if false -> all mutual friends will be displayed
     this.showFriends = bool;
   }
 }

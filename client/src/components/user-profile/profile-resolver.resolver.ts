@@ -26,6 +26,7 @@ export class ProfileResolver implements Resolve<boolean> {
       userFriends: this.apiService.findUserFriendsById(
         this.userContext.user.id
       ),
+      userChats: this.apiService.findAllUserChats(this.userContext.user.id),
     });
   }
 }

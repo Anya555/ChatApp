@@ -7,6 +7,7 @@ import { AuthGuard } from './auth.guard';
 import { ProfileResolver } from '../components/user-profile/profile-resolver.resolver';
 import { FriendProfileComponent } from '../components/friend-profile/friend-profile/friend-profile.component';
 import { FriendProfileResolver } from '../components/friend-profile/friend-profile.resolver';
+
 const routes: Routes = [
   {
     path: '',

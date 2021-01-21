@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="card-body">
+  <div class="card-header">
     <form #f="ngForm" autocomplete="off">
       <input
         type="search"
@@ -14,6 +14,22 @@
       <p (click)="openPrivateChat(friend.id)" class="friend">
         {{ friend.firstName + " " + friend.lastName }}
       </p>
+    </div>
+  </div>
+  <div class="card-body">
+    <div *ngFor="let friend of friends">
+      <div
+        class="chat"
+        *ngIf="chatHistory[friend.id].length"
+        (click)="openPrivateChat(friend.id)"
+      >
+        <p class="friendName">{{ friend.firstName }} {{ friend.lastName }}</p>
+        <p>
+          {{
+            chatHistory[friend.id][chatHistory[friend.id].length - 1].message
+          }}
+        </p>
+      </div>
     </div>
   </div>
 </div>

@@ -50,4 +50,8 @@ export class ApiService {
       `/api/messenger/user/${senderId}/friend/${receiverId}`
     );
   };
+
+  findAllUserChats = (id) => {
+    return this.http.get('/api/messenger/user/' + id);
+  };
 }

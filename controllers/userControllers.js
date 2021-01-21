@@ -2,7 +2,7 @@ const User = require("../models").User;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const db = require("../models");
-const Op = require("Sequelize").Op;
+const Op = require("sequelize").Op;
 async function hashPassword(password) {
   return await bcrypt.hash(password, 10);
 }

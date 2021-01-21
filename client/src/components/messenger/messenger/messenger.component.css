@@ -1,3 +1,9 @@
 .friend {
   cursor: pointer;
 }
+.friendName {
+  font-weight: bold;
+}
+.chat {
+  cursor: pointer;
+}
