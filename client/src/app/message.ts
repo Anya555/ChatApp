@@ -5,5 +5,4 @@ export class Message {
   createdAt: string;
   updatedAt: string;
   senderId: number;
-  isMessageSentByUser: boolean;
 }

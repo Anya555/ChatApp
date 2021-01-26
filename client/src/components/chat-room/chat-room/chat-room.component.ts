@@ -27,7 +27,6 @@ export class ChatRoomComponent implements OnInit {
   ngOnInit(): void {
     this.socketIoService.socket.on('message', (message: Message) => {
       this.messages.push(message);
-      this.isMessageSentByUserOrFriend();
     });
     this.getChatHistory();
   }
@@ -56,17 +55,12 @@ export class ChatRoomComponent implements OnInit {
         this.messages = data.messages;
         this.user = data.user;
         this.friend = data.friend;
-        this.isMessageSentByUserOrFriend();
       });
   }
 
-  isMessageSentByUserOrFriend(): void {
-    this.messages.forEach((message) => {
-      if (message.senderId === this.user.id) {
-        message.isMessageSentByUser = true;
-      } else {
-        message.isMessageSentByUser = false;
-      }
+  deleteMessage(id): void {
+    this.apiService.deleteMessage(id).subscribe(() => {
+      this.messages = this.messages.filter((message) => message.id !== id);
     });
   }
 }

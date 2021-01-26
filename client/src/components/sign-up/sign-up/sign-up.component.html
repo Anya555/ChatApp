@@ -13,7 +13,15 @@
               class="form-control"
               id="firstName"
               ngModel
+              required
+              #firstName="ngModel"
             />
+            <div
+              class="required"
+              *ngIf="(f.submitted || firstName.touched) && firstName.errors"
+            >
+              This field is required!
+            </div>
           </div>
           <div class="form-group">
             <label for="lastName">Last Name</label>
@@ -23,7 +31,15 @@
               class="form-control"
               id="lastName"
               ngModel
+              required
+              #lastName="ngModel"
             />
+            <div
+              class="required"
+              *ngIf="(f.submitted || lastName.touched) && lastName.errors"
+            >
+              This field is required!
+            </div>
             <div class="form-group">
               <label for="inputEmail4">Email</label>
               <input
@@ -32,7 +48,15 @@
                 class="form-control"
                 id="inputEmail4"
                 ngModel
+                required
+                #email="ngModel"
               />
+              <div
+                class="required"
+                *ngIf="(f.submitted || email.touched) && email.errors"
+              >
+                This field is required!
+              </div>
             </div>
             <div class="form-group">
               <label for="inputPassword4">Password</label>
@@ -42,10 +66,19 @@
                 class="form-control"
                 id="inputPassword4"
                 ngModel
+                required
+                #password="ngModel"
+                minlength="8"
               />
+              <div class="required" *ngIf="password.errors?.minlength">
+                Password must be at least 8 characters long!
+              </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-secondary">Sign Up</button>
+
+          <button type="submit" class="btn btn-secondary" [disabled]="!f.valid">
+            Sign Up
+          </button>
         </form>
       </div>
     </div>

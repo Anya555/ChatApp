@@ -3,7 +3,6 @@ module.exports = function (sequelize, DataTypes) {
     message: DataTypes.STRING(5000),
     receiverId: DataTypes.BIGINT,
     senderId: DataTypes.BIGINT,
-    isMessageSentByUser: DataTypes.BOOLEAN,
   });
   return Messages;
 };

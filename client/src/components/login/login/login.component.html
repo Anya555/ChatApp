@@ -13,7 +13,15 @@
               id="inputEmail4"
               name="email"
               ngModel
+              required
+              #email="ngModel"
             />
+            <div
+              class="required"
+              *ngIf="(f.submitted || email.touched) && email.errors"
+            >
+              This field is required!
+            </div>
           </div>
           <div class="form-group">
             <label for="inputPassword4">Password</label>
@@ -23,9 +31,19 @@
               id="inputPassword4"
               name="password"
               ngModel
+              required
+              #password="ngModel"
             />
+            <div
+              class="required"
+              *ngIf="(f.submitted || password.touched) && password.errors"
+            >
+              This field is required!
+            </div>
           </div>
-          <button type="submit" class="btn btn-secondary">Login</button>
+          <button type="submit" class="btn btn-secondary" [disabled]="!f.valid">
+            Login
+          </button>
         </form>
       </div>
     </div>

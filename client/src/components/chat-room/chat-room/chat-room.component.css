@@ -11,3 +11,17 @@ img {
 .messageSentByFriend.clear {
   clear: left;
 }
+
+.delete-message {
+  display: none;
+}
+
+.message:hover .delete-message {
+  display: block;
+  font-size: small;
+}
+
+.card {
+  height: 500px;
+  overflow-y: auto;
+}

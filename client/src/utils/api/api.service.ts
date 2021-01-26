@@ -54,4 +54,9 @@ export class ApiService {
   findAllUserChats = (id) => {
     return this.http.get('/api/messenger/user/' + id);
   };
+
+  deleteMessage = (id) => {
+    console.log(id);
+    return this.http.delete('/api/messenger/message/' + id);
+  };
 }

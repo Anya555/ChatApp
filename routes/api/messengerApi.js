@@ -7,4 +7,6 @@ router
   .get(messengerController.findChatHistory);
 
 router.route("/user/:id").get(messengerController.findAllUserChats);
+
+router.route("/message/:id").delete(messengerController.deleteMessage);
 module.exports = router;
