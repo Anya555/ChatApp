@@ -11,7 +11,9 @@ import { UserContext } from './userContext';
 import { AuthGuard } from './auth.guard';
 import { GlobalErrorHandler } from './error-handler';
 import { FriendProfileModule } from '../components/friend-profile/friend-profile.module';
-
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -23,6 +25,8 @@ import { FriendProfileModule } from '../components/friend-profile/friend-profile
     HttpClientModule,
     UserProfileModule,
     FriendProfileModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireStorageModule,
   ],
   providers: [
     UserContext,

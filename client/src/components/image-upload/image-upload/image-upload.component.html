@@ -1,0 +1,21 @@
+<div class="card">
+  <div class="card-header">
+    <button (click)="closeImageUploadForm()">x</button>
+  </div>
+  <div class="card-body">
+    <form #f="ngForm">
+      <div class="form-group">
+        <label for="image">Upload Image</label>
+        <input
+          name="image"
+          type="file"
+          class="form-control"
+          ngModel
+          required
+          (change)="uploadImage($event)"
+        />
+      </div>
+      <button>Upload</button>
+    </form>
+  </div>
+</div>

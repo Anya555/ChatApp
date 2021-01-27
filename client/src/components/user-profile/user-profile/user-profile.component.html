@@ -5,6 +5,7 @@
   (isMessengerOpenedEvent)="updateIsMessengerOpened($event)"
   (isChatRoomOpenedEvent)="updateIsChatRoomOpened($event)"
 >
+  <button upload-avatar (click)="openImageUploadForm()">upload image</button>
 </app-navbar>
 <br />
 <div class="container">
@@ -16,6 +17,12 @@
         [friends]="friends"
         (updateFriendsEvent)="getAllFriends()"
       ></app-user-friends>
+    </div>
+    <div class="col-md-4 col-sm-12" *ngIf="isImageUploadFormOpened">
+      <app-image-upload
+        [isImageUploadFormOpened]="isImageUploadFormOpened"
+        (isImageUploadFormOpenedEvent)="updateIsImageUploadFormOpened($event)"
+      ></app-image-upload>
     </div>
     <div class="col-md-4 offset-sm-4 col-sm-12" *ngIf="isMessengerOpened">
       <app-messenger

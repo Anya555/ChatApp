@@ -18,6 +18,7 @@ export class UserProfileComponent implements OnInit {
   currentUserName: string;
   friendId: number;
   userChats: Message[];
+  isImageUploadFormOpened: boolean = false;
 
   constructor(public context: UserContext, private route: ActivatedRoute) {}
 
@@ -56,5 +57,14 @@ export class UserProfileComponent implements OnInit {
 
   getFriendId(id: number): void {
     this.friendId = id;
+  }
+
+  openImageUploadForm(): void {
+    this.isImageUploadFormOpened = true;
+  }
+
+  updateIsImageUploadFormOpened(newValue: boolean): void {
+    console.log(newValue);
+    this.isImageUploadFormOpened = newValue;
   }
 }

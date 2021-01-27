@@ -7,6 +7,7 @@ import { CommonComponentModule } from '../common/common.module';
 import { UserFriendsComponent } from './user-friends/user-friends.component';
 import { MessengerModule } from '../messenger/messenger.module';
 import { ChatRoomModule } from '../chat-room/chat-room.module';
+import { ImageUploadModule } from '../image-upload/image-upload.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +16,7 @@ import { ChatRoomModule } from '../chat-room/chat-room.module';
     CommonComponentModule,
     MessengerModule,
     ChatRoomModule,
+    ImageUploadModule,
   ],
   declarations: [UserProfileComponent, UserFriendsComponent],
   exports: [UserProfileComponent],
