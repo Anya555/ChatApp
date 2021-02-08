@@ -13,7 +13,9 @@ export class User {
   lastName: string;
   id: number;
   email: string;
+  hasAvatarImage: boolean;
   password: string;
   createdAt: string;
   updatedAt: string;
+  imageUrl: string;
 }

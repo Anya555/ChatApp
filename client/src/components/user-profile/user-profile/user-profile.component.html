@@ -5,6 +5,13 @@
   (isMessengerOpenedEvent)="updateIsMessengerOpened($event)"
   (isChatRoomOpenedEvent)="updateIsChatRoomOpened($event)"
 >
+  <!-- <img [src]="imageUrl | async" /> -->
+  <div *ngIf="imageUrl">
+    <img avatar src="{{ imageUrl }}" width="100px" height="100px" />
+  </div>
+  <div *ngIf="!imageUrl">
+    <img avatar src="/assets/images/avatar.png" width="100px" height="100px" />
+  </div>
   <button upload-avatar (click)="openImageUploadForm()">upload image</button>
 </app-navbar>
 <br />
@@ -21,7 +28,9 @@
     <div class="col-md-4 col-sm-12" *ngIf="isImageUploadFormOpened">
       <app-image-upload
         [isImageUploadFormOpened]="isImageUploadFormOpened"
+        [imageUrl]="imageUrl"
         (isImageUploadFormOpenedEvent)="updateIsImageUploadFormOpened($event)"
+        (setImageUrlEvent)="setImageUrl($event)"
       ></app-image-upload>
     </div>
     <div class="col-md-4 offset-sm-4 col-sm-12" *ngIf="isMessengerOpened">

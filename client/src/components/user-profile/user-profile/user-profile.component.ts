@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { User, UserContext } from '../../../app/userContext';
 import { UserFriend } from '../../../app/user-friend';
 import { Message } from '../../../app/message';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -19,8 +21,13 @@ export class UserProfileComponent implements OnInit {
   friendId: number;
   userChats: Message[];
   isImageUploadFormOpened: boolean = false;
+  imageUrl: Observable<string | null>;
 
-  constructor(public context: UserContext, private route: ActivatedRoute) {}
+  constructor(
+    private context: UserContext,
+    private route: ActivatedRoute,
+    private firebaseStorage: AngularFireStorage
+  ) {}
 
   ngOnInit(): void {
     this.currentUserName =
@@ -29,15 +36,11 @@ export class UserProfileComponent implements OnInit {
       this.users = data.data.users;
       this.userFriends = data.data.userFriends;
       this.userChats = data.data.userChats;
-      this.getAllFriends();
+      this.imageUrl = data.data.imageUrl;
+      this.friends = data.data.friends;
     });
-  }
 
-  updateIsMessengerOpened(newValue: boolean): void {
-    this.isMessengerOpened = newValue;
-  }
-  updateIsChatRoomOpened(newValue: boolean): void {
-    this.isChatRoomOpened = newValue;
+    this.getAllFriends();
   }
 
   getAllFriends(): void {
@@ -55,6 +58,13 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  updateIsMessengerOpened(newValue: boolean): void {
+    this.isMessengerOpened = newValue;
+  }
+  updateIsChatRoomOpened(newValue: boolean): void {
+    this.isChatRoomOpened = newValue;
+  }
+
   getFriendId(id: number): void {
     this.friendId = id;
   }
@@ -64,7 +74,15 @@ export class UserProfileComponent implements OnInit {
   }
 
   updateIsImageUploadFormOpened(newValue: boolean): void {
-    console.log(newValue);
     this.isImageUploadFormOpened = newValue;
+  }
+
+  setImageUrl(): void {
+    this.firebaseStorage
+      .ref('image' + this.context.user.id)
+      .getDownloadURL()
+      .subscribe((url) => {
+        this.imageUrl = url;
+      });
   }
 }

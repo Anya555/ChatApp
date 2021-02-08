@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
-
+import { UserContext } from '../../../app/userContext';
+import { ApiService } from '../../../utils/api/api.service';
 interface Image {
   lastModified: number;
   lastModifiedDate: string;
@@ -19,7 +20,12 @@ export class ImageUploadComponent implements OnInit {
   image: Image;
   @Input() isImageUploadFormOpened: boolean;
   @Output() isImageUploadFormOpenedEvent = new EventEmitter<boolean>();
-  constructor(private firebaseStorage: AngularFireStorage) {}
+  @Output() setImageUrlEvent = new EventEmitter<void>();
+  constructor(
+    private firebaseStorage: AngularFireStorage,
+    private userContext: UserContext,
+    private apiService: ApiService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -30,11 +36,18 @@ export class ImageUploadComponent implements OnInit {
 
   uploadImage(event): void {
     this.image = event.target.files[0];
+
     this.firebaseStorage
-      .ref('images')
-      .put(this.image)
+      .upload('image' + this.userContext.user.id, this.image)
       .then(() => {
-        this.closeImageUploadForm();
+        this.userContext.user.hasAvatarImage = true;
+
+        this.apiService
+          .updateUser(this.userContext.user.id, this.userContext.user)
+          .subscribe(() => {
+            this.closeImageUploadForm();
+            this.setImageUrlEvent.emit();
+          });
       });
   }
 }

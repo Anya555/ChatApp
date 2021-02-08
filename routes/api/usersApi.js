@@ -1,20 +1,25 @@
 const router = require("express").Router();
 const userController = require("../../controllers/userControllers");
 
+// =========== routes related user model ============================//
 router.route("/signup").post(userController.signup);
 
 router.route("/login").post(userController.login);
 
-router.route("/user-profile/:id/friend").post(userController.sendFriendRequest);
-
-router.route("/user-profile/:id").get(userController.findUserById);
-
 router.route("/").get(userController.getAllUsers);
 
-router.route("/friend-profile/:id").get(userController.findAllUserFriends);
+router.route("/:id").get(userController.findUserById);
 
-router.route("/user-profile/:id").put(userController.confirmFriendsRequest);
+router.route("/:id").put(userController.updateUser);
 
-router.route("/user-profile/:id").delete(userController.deleteFriendsRequest);
+// =========== routes related userFriends model ============================//
+
+router.route("/:id/friends").post(userController.sendFriendRequest);
+
+router.route("/:id/friends").get(userController.findAllUserFriends);
+
+router.route("/friends/:id").put(userController.updateUserFriends);
+
+router.route("/friends/:id").delete(userController.deleteFriendsRequest);
 
 module.exports = router;

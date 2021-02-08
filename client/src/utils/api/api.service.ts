@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/userContext';
+import { UserFriend } from 'src/app/user-friend';
+import { Message } from 'src/app/message';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -16,29 +18,29 @@ export class ApiService {
   };
 
   findUserById = (id: string): Observable<User> => {
-    return this.http.get<User>('/api/users/user-profile/' + id);
+    return this.http.get<User>('/api/users/' + id);
   };
 
-  findAllUsers = () => {
-    return this.http.get('/api/users');
+  findAllUsers = (): Observable<User[]> => {
+    return this.http.get<User[]>('/api/users');
   };
 
   sendFriendRequest = (userId, friendId) => {
-    return this.http.post(`/api/users/user-profile/${userId}/friend`, {
+    return this.http.post(`/api/users/${userId}/friends`, {
       friendId,
     });
   };
 
-  findUserFriendsById = (id) => {
-    return this.http.get('/api/users/friend-profile/' + id);
+  findUserFriendsById = (id): Observable<UserFriend[]> => {
+    return this.http.get<UserFriend[]>(`/api/users/${id}/friends`);
   };
 
-  confirmFriendRequest = (id, isPending) => {
-    return this.http.put('/api/users/user-profile/' + id, isPending);
+  updateUserFriend = (id, userFriend) => {
+    return this.http.put('/api/users/friends/' + id, userFriend);
   };
 
   deleteFriendsRequest = (id) => {
-    return this.http.delete('/api/users/user-profile/' + id);
+    return this.http.delete('/api/users/friends/' + id);
   };
 
   saveMessageToDB = (message) => {
@@ -51,12 +53,15 @@ export class ApiService {
     );
   };
 
-  findAllUserChats = (id) => {
-    return this.http.get('/api/messenger/user/' + id);
+  findAllUserChats = (id): Observable<Message[]> => {
+    return this.http.get<Message[]>('/api/messenger/user/' + id);
   };
 
   deleteMessage = (id) => {
-    console.log(id);
     return this.http.delete('/api/messenger/message/' + id);
+  };
+
+  updateUser = (id, user) => {
+    return this.http.put('/api/users/' + id, user);
   };
 }

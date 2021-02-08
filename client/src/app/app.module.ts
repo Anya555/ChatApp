@@ -31,7 +31,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
   providers: [
     UserContext,
     AuthGuard,
-    { provide: ErrorHandler, useClass: GlobalErrorHandler },
+    // { provide: ErrorHandler, useClass: GlobalErrorHandler },
   ],
   bootstrap: [AppComponent],
 })

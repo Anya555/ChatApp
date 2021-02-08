@@ -1,3 +1,8 @@
 .card-header {
   cursor: pointer;
 }
+
+.friend {
+  display: inline-block;
+  margin: 5px;
+}

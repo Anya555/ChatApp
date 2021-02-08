@@ -9,8 +9,5 @@ export class SocketIoService {
   constructor() {}
   setupSocketConnection() {
     this.socket = io(environment.SOCKET_ENDPOINT);
-    // this.socket.on('message', (message: string) => {
-    //   console.log(message);
-    // });
   }
 }

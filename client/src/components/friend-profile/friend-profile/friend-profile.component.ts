@@ -20,6 +20,7 @@ export class FriendProfileComponent implements OnInit {
   friendsOfUser: User[];
   showFriends: boolean = true;
   mutualFriends: User[];
+  imageUrl: string;
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
@@ -33,6 +34,7 @@ export class FriendProfileComponent implements OnInit {
       this.friendId = data.data.user.id;
       this.currentUserName =
         data.data.user.firstName + ' ' + data.data.user.lastName;
+      this.imageUrl = data.data.imageUrl;
 
       // friend who's page logged in user is currently on
       this.friend = data.data.userFriends.find(
@@ -42,7 +44,7 @@ export class FriendProfileComponent implements OnInit {
       );
 
       // =========================================================================== //
-      
+
       let confirmedRequestsOfFriend = data.data.friendsOfFriend.filter(
         (userFriend) => !userFriend.isPending
       );
@@ -55,6 +57,7 @@ export class FriendProfileComponent implements OnInit {
               userFriend.userId === user.id || userFriend.friendId === user.id
           )
       );
+      console.log(this.friendsOfFriend);
 
       // ============================================================================//
 
@@ -72,7 +75,7 @@ export class FriendProfileComponent implements OnInit {
       );
 
       // =========================================================================== //
-    // get mutual friends between logged in user and a friend who's page he's currently on  
+      // get mutual friends between logged in user and a friend who's page he's currently on
       this.mutualFriends = this.friendsOfUser.filter((user) =>
         this.friendsOfFriend.some((friend) => friend.id === user.id)
       );
@@ -100,7 +103,6 @@ export class FriendProfileComponent implements OnInit {
   navigateToUsersPage(id): void {
     this.router.navigate(['friend-profile/', id]);
   }
-
 
   showFriendsOrMutualFriends(bool: boolean): void {
     // if true -> all friends will be displayed, if false -> all mutual friends will be displayed

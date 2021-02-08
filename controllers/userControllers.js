@@ -64,8 +64,9 @@ module.exports = {
       next(error);
     }
   },
-  login: async (req, res, next) => {
+  login: async (req, res) => {
     try {
+      console.log(req.headers);
       const { email, password } = req.body;
 
       const user = await User.findOne({
@@ -172,12 +173,12 @@ module.exports = {
     }
   },
 
-  confirmFriendsRequest: async (req, res) => {
+  updateUserFriends: async (req, res) => {
     try {
-      const friendRequestToAccept = await db.UserFriends.update(req.body, {
+      const userFriend = await db.UserFriends.update(req.body, {
         where: { id: req.params.id },
       });
-      res.status(200).json(friendRequestToAccept);
+      res.status(200).json(userFriend);
     } catch (error) {
       return res.status(400).json(error);
     }
@@ -191,6 +192,17 @@ module.exports = {
         },
       });
       res.status(200).json(friendRequestToDelete);
+    } catch (error) {
+      return res.status(400).json(error);
+    }
+  },
+
+  updateUser: async (req, res) => {
+    try {
+      const user = await db.User.update(req.body, {
+        where: { id: req.params.id },
+      });
+      res.status(200).json(user);
     } catch (error) {
       return res.status(400).json(error);
     }

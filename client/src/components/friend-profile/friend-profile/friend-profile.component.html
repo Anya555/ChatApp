@@ -1,4 +1,10 @@
 <app-navbar [userName]="currentUserName" [users]="users">
+  <div *ngIf="imageUrl">
+    <img avatar src="{{ imageUrl }}" width="100px" height="100px" />
+  </div>
+  <div *ngIf="!imageUrl">
+    <img avatar src="/assets/images/avatar.png" width="100px" height="100px" />
+  </div>
   <button
     *ngIf="!friend"
     (click)="sendFriendRequest()"
@@ -40,14 +46,46 @@
         <div class="card-body">
           <div *ngIf="showFriends">
             <div *ngFor="let friend of friendsOfFriend">
-              <p (click)="navigateToUsersPage(friend.id)">
+              <div *ngIf="friend.imageUrl" class="friend">
+                <img
+                  avatar
+                  src="{{ friend.imageUrl }}"
+                  width="30px"
+                  height="30px"
+                />
+              </div>
+              <div *ngIf="!friend.imageUrl" class="friend">
+                <img
+                  avatar
+                  src="/assets/images/avatar.png"
+                  width="30px"
+                  height="30px"
+                />
+              </div>
+              <p (click)="navigateToUsersPage(friend.id)" class="friend">
                 {{ friend.firstName }} {{ friend.lastName }}
               </p>
             </div>
           </div>
           <div *ngIf="!showFriends">
             <div *ngFor="let friend of mutualFriends">
-              <p (click)="navigateToUsersPage(friend.id)">
+              <div *ngIf="friend.imageUrl" class="friend">
+                <img
+                  avatar
+                  src="{{ friend.imageUrl }}"
+                  width="30px"
+                  height="30px"
+                />
+              </div>
+              <div *ngIf="!friend.imageUrl" class="friend">
+                <img
+                  avatar
+                  src="/assets/images/avatar.png"
+                  width="30px"
+                  height="30px"
+                />
+              </div>
+              <p (click)="navigateToUsersPage(friend.id)" class="friend">
                 {{ friend.firstName }} {{ friend.lastName }}
               </p>
             </div>

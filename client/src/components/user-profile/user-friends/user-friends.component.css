@@ -13,3 +13,11 @@ h6 {
 .user {
   cursor: pointer;
 }
+
+.friend {
+  display: inline-block;
+}
+
+img {
+  padding-right: 5px;
+}

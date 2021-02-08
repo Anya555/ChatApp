@@ -44,11 +44,10 @@ export class UserFriendsComponent implements OnInit {
     let userFriendToAdd: UserFriend = this.userFriends.find(
       (user) => user.userId === id
     );
-
+    userFriendToAdd.isPending = false;
     this.apiService
-      .confirmFriendRequest(userFriendToAdd.id, { isPending: false })
+      .updateUserFriend(userFriendToAdd.id, userFriendToAdd)
       .subscribe(() => {
-        userFriendToAdd.isPending = false;
         this.getPendingFriendsRequests();
         this.updateFriendsEvent.emit();
       });

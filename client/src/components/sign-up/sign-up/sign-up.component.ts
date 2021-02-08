@@ -20,6 +20,7 @@ export class SignUpComponent implements OnInit {
 
   addNewUser(f: NgForm): void {
     this.apiService.signup(f.value).subscribe((userContext: UserContext) => {
+      console.log(userContext);
       this.context.user = userContext.user;
       this.context.accessToken = userContext.accessToken;
       this.context.refreshToken = userContext.refreshToken;

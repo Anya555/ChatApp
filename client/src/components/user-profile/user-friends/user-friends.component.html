@@ -13,7 +13,20 @@
         class="user"
         (click)="navigateToUsersPage(friend.id)"
       >
-        {{ friend.firstName + " " + friend.lastName }}
+        <div *ngIf="friend.imageUrl" class="friend">
+          <img avatar src="{{ friend.imageUrl }}" width="30px" height="30px" />
+        </div>
+        <div *ngIf="!friend.imageUrl" class="friend">
+          <img
+            avatar
+            src="/assets/images/avatar.png"
+            width="30px"
+            height="30px"
+          />
+        </div>
+        <p class="friend">
+          {{ friend.firstName + " " + friend.lastName }}
+        </p>
       </div>
     </div>
     <div *ngIf="!showFriends">
@@ -22,7 +35,25 @@
         class="pending user"
         (click)="navigateToUsersPage(pendingUser.id)"
       >
-        {{ pendingUser.firstName + " " + pendingUser.lastName }}
+        <div *ngIf="pendingUser.imageUrl" class="friend">
+          <img
+            avatar
+            src="{{ pendingUser.imageUrl }}"
+            width="30px"
+            height="30px"
+          />
+        </div>
+        <div *ngIf="!pendingUser.imageUrl" class="friend">
+          <img
+            avatar
+            src="/assets/images/avatar.png"
+            width="30px"
+            height="30px"
+          />
+        </div>
+        <div class="friend">
+          {{ pendingUser.firstName + " " + pendingUser.lastName }}
+        </div>
         <button
           class="btn btn-outline-primary"
           (click)="confirmFriendsRequest(pendingUser.id)"
