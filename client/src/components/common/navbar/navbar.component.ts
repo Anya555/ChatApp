@@ -36,7 +36,14 @@ export class NavbarComponent implements OnInit {
         },
         templates: {
           suggestion: function (suggestion) {
-            return suggestion.firstName + ' ' + suggestion.lastName;
+            let imageUrl;
+            if (suggestion.hasAvatarImage) {
+              imageUrl = suggestion.imageUrl;
+            } else {
+              imageUrl = '/assets/images/avatar.png';
+            }
+            console.log(imageUrl);
+            return `<img src=${imageUrl} width="30px" height="30px"/>${suggestion.firstName}${suggestion.lastName}`;
           },
         },
       },
