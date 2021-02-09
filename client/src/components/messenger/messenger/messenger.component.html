@@ -14,6 +14,7 @@
       <p (click)="openPrivateChat(friend.id)" class="friend">
         {{ friend.firstName + " " + friend.lastName }}
       </p>
+      <br />
     </div>
   </div>
   <div class="card-body">
@@ -23,12 +24,24 @@
         *ngIf="chatHistory[friend.id].length"
         (click)="openPrivateChat(friend.id)"
       >
-        <p class="friendName">{{ friend.firstName }} {{ friend.lastName }}</p>
-        <p>
+        <div *ngIf="friend.imageUrl" class="friend">
+          <img avatar src="{{ friend.imageUrl }}" width="45px" height="45px" />
+        </div>
+        <div *ngIf="!friend.imageUrl" class="friend">
+          <img
+            avatar
+            src="/assets/images/avatar.png"
+            width="40px"
+            height="40px"
+          />
+        </div>
+        <div class="friend name">
+          {{ friend.firstName }} {{ friend.lastName }}
+          <br />
           {{
             chatHistory[friend.id][chatHistory[friend.id].length - 1].message
           }}
-        </p>
+        </div>
       </div>
     </div>
   </div>

@@ -25,7 +25,6 @@ export class MessengerComponent implements OnInit {
   constructor(private context: UserContext) {}
 
   ngOnInit(): void {
-    console.log(this.userChats);
     this.findAllMessagesBetweenTwoUsers();
   }
 

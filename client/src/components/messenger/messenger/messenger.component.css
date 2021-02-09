@@ -7,3 +7,10 @@
 .chat {
   cursor: pointer;
 }
+.friend {
+  float: left;
+}
+
+img {
+  margin-right: 5px;
+}

@@ -4,7 +4,7 @@ import { ApiService } from '../../../utils/api/api.service';
 import { User, UserContext } from '../../../app/userContext';
 import { SocketIoService } from '../../../utils/api/socket.io.service';
 import { Message } from '../../../app/message';
-
+import { AngularFireStorage } from '@angular/fire/storage';
 @Component({
   selector: 'app-chat-room',
   templateUrl: './chat-room.component.html',
@@ -21,7 +21,8 @@ export class ChatRoomComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private userContext: UserContext,
-    private socketIoService: SocketIoService
+    private socketIoService: SocketIoService,
+    private firebaseStorage: AngularFireStorage
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +56,20 @@ export class ChatRoomComponent implements OnInit {
         this.messages = data.messages;
         this.user = data.user;
         this.friend = data.friend;
+        this.getImageUrl(this.user);
+        this.getImageUrl(this.friend);
       });
+  }
+
+  getImageUrl(user): void {
+    if (user.hasAvatarImage) {
+      this.firebaseStorage
+        .ref('image' + user.id)
+        .getDownloadURL()
+        .subscribe((url) => {
+          user.imageUrl = url;
+        });
+    }
   }
 
   deleteMessage(id): void {

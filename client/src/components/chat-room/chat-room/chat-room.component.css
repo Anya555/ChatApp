@@ -1,5 +1,6 @@
-img {
+.close-chat-room {
   float: right;
+  padding-right: 5px;
 }
 .userName {
   font-weight: bold;
@@ -24,4 +25,34 @@ img {
 .card {
   height: 500px;
   overflow-y: auto;
+}
+
+.friend-card-header {
+  float: left;
+}
+
+.user {
+  float: left;
+}
+
+.image {
+  padding-right: 5px;
+}
+
+.friend {
+  float: right;
+}
+
+.friends-image {
+  padding-left: 5px;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+}
+
+.message {
+  margin-bottom: 0px;
 }
