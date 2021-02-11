@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    autocomplete('#search', { hint: true }, [
+    autocomplete('#search-users', { hint: true }, [
       {
         source: (inputValue, callBack) => {
           let filteredUsers = this.users.filter(
@@ -42,8 +42,7 @@ export class NavbarComponent implements OnInit {
             } else {
               imageUrl = '/assets/images/avatar.png';
             }
-            console.log(imageUrl);
-            return `<img src=${imageUrl} width="30px" height="30px"/>${suggestion.firstName}${suggestion.lastName}`;
+            return `<img src=${imageUrl} width="30px" height="30px"/> ${suggestion.firstName} ${suggestion.lastName}`;
           },
         },
       },

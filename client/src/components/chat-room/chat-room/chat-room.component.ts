@@ -5,6 +5,7 @@ import { User, UserContext } from '../../../app/userContext';
 import { SocketIoService } from '../../../utils/api/socket.io.service';
 import { Message } from '../../../app/message';
 import { AngularFireStorage } from '@angular/fire/storage';
+
 @Component({
   selector: 'app-chat-room',
   templateUrl: './chat-room.component.html',
@@ -14,10 +15,11 @@ export class ChatRoomComponent implements OnInit {
   messages: Message[];
   user: User;
   friend: User;
-
+  @Input() userChats: Message[];
   @Input() isChatRoomOpened: boolean;
   @Input() friendId: number;
   @Output() isChatRoomOpenedEvent = new EventEmitter<boolean>();
+  @Output() isNewMessageSentEvent = new EventEmitter<Message[]>();
   constructor(
     private apiService: ApiService,
     private userContext: UserContext,
@@ -28,6 +30,8 @@ export class ChatRoomComponent implements OnInit {
   ngOnInit(): void {
     this.socketIoService.socket.on('message', (message: Message) => {
       this.messages.push(message);
+      this.userChats.push(message);
+      this.isNewMessageSentEvent.emit(this.userChats);
     });
     this.getChatHistory();
   }
@@ -56,12 +60,12 @@ export class ChatRoomComponent implements OnInit {
         this.messages = data.messages;
         this.user = data.user;
         this.friend = data.friend;
-        this.getImageUrl(this.user);
-        this.getImageUrl(this.friend);
+        this.setImageUrl(this.user);
+        this.setImageUrl(this.friend);
       });
   }
 
-  getImageUrl(user): void {
+  setImageUrl(user): void {
     if (user.hasAvatarImage) {
       this.firebaseStorage
         .ref('image' + user.id)
@@ -75,6 +79,8 @@ export class ChatRoomComponent implements OnInit {
   deleteMessage(id): void {
     this.apiService.deleteMessage(id).subscribe(() => {
       this.messages = this.messages.filter((message) => message.id !== id);
+      this.userChats = this.userChats.filter((message) => message.id !== id);
+      this.isNewMessageSentEvent.emit(this.userChats);
     });
   }
 }

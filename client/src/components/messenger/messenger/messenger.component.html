@@ -1,20 +1,14 @@
 <div class="card">
   <div class="card-header">
-    <form #f="ngForm" autocomplete="off">
+    <form>
       <input
+        id="search-friends"
         type="search"
         name="search"
         class="form-control mr-sm-2 search"
         placeholder="Search friends"
-        ngModel
-        (ngModelChange)="searchFriends(f)"
       />
     </form>
-    <div *ngFor="let friend of filteredFriends">
-      <p (click)="openPrivateChat(friend.id)" class="friend">
-        {{ friend.firstName + " " + friend.lastName }}
-      </p>
-    </div>
   </div>
   <div class="card-body">
     <div *ngFor="let friend of friends">
@@ -36,11 +30,32 @@
         </div>
         <div class="friend name">
           {{ friend.firstName }} {{ friend.lastName }}
-          <br />
+        </div>
+        <br />
+        <!-- if user sent a message, add 'you:' before the message -->
+        <div
+          class="friend"
+          *ngIf="
+            chatHistory[friend.id][chatHistory[friend.id].length - 1]
+              .senderId === user.id;
+            else other_content
+          "
+        >
+          you:
           {{
             chatHistory[friend.id][chatHistory[friend.id].length - 1].message
           }}
         </div>
+        <!-- else just display a message -->
+        <ng-template #other_content>
+          {{ friend.firstName }}:
+          {{
+            chatHistory[friend.id][chatHistory[friend.id].length - 1].message
+          }}</ng-template
+        >
+        <!-- <button class="btn" (click)="deleteChatHistory(chatHistory[friend.id])">
+          delete
+        </button> -->
       </div>
     </div>
   </div>

@@ -77,6 +77,10 @@ export class UserProfileComponent implements OnInit {
     this.isImageUploadFormOpened = newValue;
   }
 
+  updateIsNewMessageSentEvent(newUserChats: Message[]): void {
+    this.userChats = newUserChats;
+  }
+
   setImageUrl(): void {
     this.firebaseStorage
       .ref('image' + this.context.user.id)

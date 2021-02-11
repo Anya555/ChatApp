@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User, UserContext } from '../../../app/userContext';
-import { NgForm } from '@angular/forms';
 import { Message } from '../../../app/message';
-
+import autocomplete from 'autocomplete.js';
 interface ChatHistory {
   [key: number]: Message[];
 }
@@ -13,8 +12,8 @@ interface ChatHistory {
   styleUrls: ['./messenger.component.css'],
 })
 export class MessengerComponent implements OnInit {
-  filteredFriends: User[];
   chatHistory: ChatHistory = {};
+  user: User;
   @Input() friends: User[];
   @Input() isMessengerOpened: boolean;
   @Input() isChatRoomOpened: boolean;
@@ -25,18 +24,38 @@ export class MessengerComponent implements OnInit {
   constructor(private context: UserContext) {}
 
   ngOnInit(): void {
+    this.user = this.context.user;
     this.findAllMessagesBetweenTwoUsers();
   }
+  ngAfterViewInit(): void {
+    autocomplete('#search-friends', { hint: true }, [
+      {
+        source: (inputValue, callBack) => {
+          let filteredFriends = this.friends.filter(
+            (user) =>
+              user.firstName
+                .toLocaleLowerCase()
+                .includes(inputValue.toLowerCase()) ||
+              user.lastName.toLowerCase().includes(inputValue.toLowerCase())
+          );
 
-  searchFriends(f: NgForm): void {
-    this.filteredFriends = this.friends.filter(
-      (user) =>
-        user.firstName.toLowerCase().includes(f.value.search.toLowerCase()) ||
-        user.lastName.toLowerCase().includes(f.value.search.toLowerCase())
-    );
-    if (!f.value.search) {
-      this.filteredFriends = [];
-    }
+          callBack(filteredFriends);
+        },
+        templates: {
+          suggestion: function (suggestion) {
+            let imageUrl;
+            if (suggestion.hasAvatarImage) {
+              imageUrl = suggestion.imageUrl;
+            } else {
+              imageUrl = '/assets/images/avatar.png';
+            }
+            return `<img src=${imageUrl} width="30px" height="30px"/> ${suggestion.firstName} ${suggestion.lastName}`;
+          },
+        },
+      },
+    ]).on('autocomplete:selected', (event, suggestion, dataset, context) => {
+      this.openPrivateChat(suggestion.id);
+    });
   }
 
   openPrivateChat(id): void {

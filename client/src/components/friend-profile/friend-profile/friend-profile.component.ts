@@ -57,7 +57,6 @@ export class FriendProfileComponent implements OnInit {
               userFriend.userId === user.id || userFriend.friendId === user.id
           )
       );
-      console.log(this.friendsOfFriend);
 
       // ============================================================================//
 

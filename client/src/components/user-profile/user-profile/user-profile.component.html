@@ -5,7 +5,6 @@
   (isMessengerOpenedEvent)="updateIsMessengerOpened($event)"
   (isChatRoomOpenedEvent)="updateIsChatRoomOpened($event)"
 >
-  <!-- <img [src]="imageUrl | async" /> -->
   <div *ngIf="imageUrl">
     <img avatar src="{{ imageUrl }}" width="100px" height="100px" />
   </div>
@@ -49,6 +48,8 @@
         [isChatRoomOpened]="isChatRoomOpened"
         (isChatRoomOpenedEvent)="updateIsChatRoomOpened($event)"
         [friendId]="friendId"
+        [userChats]="userChats"
+        (isNewMessageSentEvent)="updateIsNewMessageSentEvent($event)"
       ></app-chat-room>
     </div>
   </div>
