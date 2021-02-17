@@ -5,4 +5,5 @@ export class Message {
   createdAt: string;
   updatedAt: string;
   senderId: number;
+  userIdToDeleteChatHistory: number;
 }

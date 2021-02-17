@@ -54,13 +54,60 @@ module.exports = {
 
   deleteMessage: async (req, res) => {
     try {
-      console.log(req.params.id);
       const messageToDelete = await db.Messages.destroy({
         where: {
           id: req.params.id,
         },
       });
       res.status(200).json(messageToDelete);
+    } catch (error) {
+      res.status(400).json(error);
+    }
+  },
+
+  deleteChatHistoryForOneUser: async (req, res) => {
+    try {
+      let messageIdArr = req.body;
+      let userId = req.params.userId;
+
+      const chatHistory = await db.Messages.update(
+        {
+          userIdToDeleteChatHistory: userId,
+        },
+        {
+          where: {
+            id: {
+              [Op.in]: messageIdArr, // this will update all the records
+            }, // with an id from the messageId array
+          },
+        }
+      );
+
+      res.status(200).json(chatHistory);
+    } catch (error) {
+      res.status(400).json(error);
+    }
+  },
+
+  deleteChatHistoryForBothUsers: async (req, res) => {
+    try {
+      let messageIdArr = req.query.id;
+
+      const chatHistory = await db.Messages.destroy({
+        where: { id: messageIdArr },
+      });
+      res.status(200).json(chatHistory);
+    } catch (error) {
+      res.status(400).json(error);
+    }
+  },
+
+  updateMessageInfo: async (req, res) => {
+    try {
+      let messageToUpdate = await db.Message.update(req.body, {
+        where: { id: req.params.id },
+      });
+      res.status(200).json(messageToUpdate);
     } catch (error) {
       res.status(400).json(error);
     }

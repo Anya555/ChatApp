@@ -64,4 +64,24 @@ export class ApiService {
   updateUser = (id, user) => {
     return this.http.put('/api/users/' + id, user);
   };
+
+  deleteChatHistoryForOneUser = (userId: number, messageIdArr: number[]) => {
+    return this.http.put(`/api/messenger/user/${userId}`, messageIdArr);
+  };
+
+  deleteChatHistoryForBothUsers = (messageIdArr: number[]) => {
+    let str = 'id=';
+    messageIdArr.forEach((id) => {
+      str += id;
+      if (id !== messageIdArr[messageIdArr.length - 1]) {
+        str += '&id=';
+      }
+    });
+
+    return this.http.delete('/api/messenger?' + str);
+  };
+
+  updateMessageInfo = (id, message) => {
+    return this.http.put(`/api/messenger/message/${id}`, message);
+  };
 }

@@ -13,49 +13,57 @@
   <div class="card-body">
     <div *ngFor="let friend of friends">
       <div
-        class="chat"
-        *ngIf="chatHistory[friend.id].length"
-        (click)="openPrivateChat(friend.id)"
+        *ngIf="
+          chatHistory[friend.id].length &&
+          !isChatHistoryDeleted(chatHistory[friend.id])
+        "
       >
-        <div *ngIf="friend.imageUrl" class="friend">
-          <img avatar src="{{ friend.imageUrl }}" width="45px" height="45px" />
+        <div class="chat" (click)="openPrivateChat(friend.id)">
+          <div *ngIf="friend.imageUrl" class="friend">
+            <img
+              avatar
+              src="{{ friend.imageUrl }}"
+              width="45px"
+              height="45px"
+            />
+          </div>
+          <div *ngIf="!friend.imageUrl" class="friend">
+            <img
+              avatar
+              src="/assets/images/avatar.png"
+              width="40px"
+              height="40px"
+            />
+          </div>
+          <div class="friend name">
+            {{ friend.firstName }} {{ friend.lastName }}
+          </div>
+          <br />
+          <!-- if user sent a message, add 'you:' before the message -->
+          <div
+            class="friend"
+            *ngIf="
+              chatHistory[friend.id][chatHistory[friend.id].length - 1]
+                .senderId === user.id;
+              else other_content
+            "
+          >
+            you:
+            {{
+              chatHistory[friend.id][chatHistory[friend.id].length - 1].message
+            }}
+          </div>
+          <!-- else just display a message -->
+          <ng-template #other_content>
+            {{ friend.firstName }}:
+            {{
+              chatHistory[friend.id][chatHistory[friend.id].length - 1].message
+            }}</ng-template
+          >
         </div>
-        <div *ngIf="!friend.imageUrl" class="friend">
-          <img
-            avatar
-            src="/assets/images/avatar.png"
-            width="40px"
-            height="40px"
-          />
-        </div>
-        <div class="friend name">
-          {{ friend.firstName }} {{ friend.lastName }}
-        </div>
-        <br />
-        <!-- if user sent a message, add 'you:' before the message -->
-        <div
-          class="friend"
-          *ngIf="
-            chatHistory[friend.id][chatHistory[friend.id].length - 1]
-              .senderId === user.id;
-            else other_content
-          "
-        >
-          you:
-          {{
-            chatHistory[friend.id][chatHistory[friend.id].length - 1].message
-          }}
-        </div>
-        <!-- else just display a message -->
-        <ng-template #other_content>
-          {{ friend.firstName }}:
-          {{
-            chatHistory[friend.id][chatHistory[friend.id].length - 1].message
-          }}</ng-template
-        >
-        <!-- <button class="btn" (click)="deleteChatHistory(chatHistory[friend.id])">
+        <button class="btn" (click)="deleteChatHistory(friend.id)">
           delete
-        </button> -->
+        </button>
       </div>
     </div>
   </div>

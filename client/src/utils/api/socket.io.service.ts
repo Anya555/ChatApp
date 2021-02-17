@@ -9,5 +9,6 @@ export class SocketIoService {
   constructor() {}
   setupSocketConnection() {
     this.socket = io(environment.SOCKET_ENDPOINT);
+    // console.log(this.socket);
   }
 }

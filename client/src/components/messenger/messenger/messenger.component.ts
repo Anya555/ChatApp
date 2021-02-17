@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User, UserContext } from '../../../app/userContext';
 import { Message } from '../../../app/message';
 import autocomplete from 'autocomplete.js';
+import { ApiService } from '../../../utils/api/api.service';
 interface ChatHistory {
   [key: number]: Message[];
 }
@@ -21,7 +22,7 @@ export class MessengerComponent implements OnInit {
   @Output() isMessengerOpenedEvent = new EventEmitter<boolean>();
   @Output() isChatRoomOpenedEvent = new EventEmitter<boolean>();
   @Output() getFriendIdEvent = new EventEmitter<number>();
-  constructor(private context: UserContext) {}
+  constructor(private context: UserContext, private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.user = this.context.user;
@@ -67,6 +68,7 @@ export class MessengerComponent implements OnInit {
   }
 
   findAllMessagesBetweenTwoUsers(): void {
+    console.log(this.userChats);
     this.friends.forEach((friend) => {
       // creates a chatHistory object, where each key is an 'id' of each user's friends and it's value is an array of all messages between them
       this.chatHistory[friend.id] = this.userChats.filter(
@@ -74,5 +76,41 @@ export class MessengerComponent implements OnInit {
           userChat.receiverId === friend.id || userChat.senderId === friend.id
       );
     });
+  }
+
+  deleteChatHistory(friendId): void {
+    let messageIdArr = [];
+    let isChatHistoryDeletedByOneUser = false;
+    this.chatHistory[friendId].forEach((message: Message) => {
+      messageIdArr.push(message.id);
+      if (message.userIdToDeleteChatHistory) {
+        isChatHistoryDeletedByOneUser = true;
+      }
+    });
+
+    if (isChatHistoryDeletedByOneUser) {
+      this.apiService
+        .deleteChatHistoryForBothUsers(messageIdArr)
+        .subscribe(() => (this.chatHistory[friendId] = []));
+    } else {
+      this.apiService
+        .deleteChatHistoryForOneUser(this.context.user.id, messageIdArr)
+        .subscribe(() => {
+          this.chatHistory[friendId].forEach((message: Message) => {
+            message.userIdToDeleteChatHistory = this.context.user.id;
+          });
+        });
+    }
+  }
+
+  isChatHistoryDeleted(chatHistory: Message[]): boolean {
+    let isChatHistoryDeleted: boolean = false;
+    chatHistory.forEach((message: Message) => {
+      if (message.userIdToDeleteChatHistory === this.context.user.id) {
+        isChatHistoryDeleted = true;
+      }
+    });
+
+    return isChatHistoryDeleted;
   }
 }
