@@ -15,34 +15,31 @@
       (click)="closePrivateChatRoom()"
     />
   </div>
-  <div class="card-body" *ngFor="let message of messages">
-    <!-- message sent by user -->
-    <div class="message-sent-by-user">
-      <div *ngIf="message.senderId === user.id">
-        <div *ngIf="user.imageUrl" class="user image">
-          <img avatar src="{{ user.imageUrl }}" width="30px" height="30px" />
-        </div>
-        <div *ngIf="!user.imageUrl" class="user image">
-          <img
-            avatar
-            src="/assets/images/avatar.png"
-            width="30px"
-            height="30px"
-          />
-        </div>
+  <div class="card-body">
+    <div *ngFor="let message of messages">
+      <!-- message sent by user -->
+      <div
+        *ngIf="
+          message.senderId === user.id &&
+          message.userIdToDeleteChatHistory !== user.id
+        "
+        class="message-sent-by-user"
+      >
         <div class="message">
           <p>
             {{ message.message }}
           </p>
-          <p class="delete-message" (click)="deleteMessage(message.id)">
-            delete
-          </p>
+          <p class="delete-message" (click)="deleteChat(message)">delete</p>
         </div>
       </div>
-    </div>
-    <!-- message sent-by-friend -->
-    <div class="message-sent-by-friend">
-      <div *ngIf="message.senderId !== user.id">
+      <!-- message sent-by-friend -->
+      <div
+        *ngIf="
+          message.senderId !== user.id &&
+          message.userIdToDeleteChatHistory !== user.id
+        "
+        class="message-sent-by-friend"
+      >
         <div *ngIf="friend.imageUrl" class="friend">
           <img
             avatar
@@ -65,13 +62,23 @@
           <p>
             {{ message.message }}
           </p>
-          <p class="delete-message" (click)="deleteMessage(message.id)">
-            delete
-          </p>
+
+          <p class="delete-message" (click)="deleteChat(message)">delete</p>
         </div>
+      </div>
+      <br />
+      <div
+        class="seen"
+        *ngIf="
+          message.userIdToDeleteChatHistory !== user.id &&
+          isMessageSeen(message)
+        "
+      >
+        seen
       </div>
     </div>
   </div>
+
   <form #f="ngForm" (ngSubmit)="onSubmit(f)" class="flex">
     <input
       class="form-control mr-sm-2 search"

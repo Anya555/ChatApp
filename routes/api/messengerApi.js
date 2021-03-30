@@ -12,8 +12,7 @@ router
 
 router.route("/user/:id").get(messengerController.findAllUserChats);
 
-router.route("/message/:id").delete(messengerController.deleteMessage);
 router.route("/").delete(messengerController.deleteChatHistoryForBothUsers);
 
-router.route("/message/:id").put(messengerController.updateMessageInfo);
+router.route("/").put(messengerController.updateMessageInfo);
 module.exports = router;

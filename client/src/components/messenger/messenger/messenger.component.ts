@@ -3,6 +3,7 @@ import { User, UserContext } from '../../../app/userContext';
 import { Message } from '../../../app/message';
 import autocomplete from 'autocomplete.js';
 import { ApiService } from '../../../utils/api/api.service';
+
 interface ChatHistory {
   [key: number]: Message[];
 }
@@ -13,7 +14,6 @@ interface ChatHistory {
   styleUrls: ['./messenger.component.css'],
 })
 export class MessengerComponent implements OnInit {
-  chatHistory: ChatHistory = {};
   user: User;
   @Input() friends: User[];
   @Input() isMessengerOpened: boolean;
@@ -22,11 +22,16 @@ export class MessengerComponent implements OnInit {
   @Output() isMessengerOpenedEvent = new EventEmitter<boolean>();
   @Output() isChatRoomOpenedEvent = new EventEmitter<boolean>();
   @Output() getFriendIdEvent = new EventEmitter<number>();
+  @Output() deleteChatHistory = new EventEmitter<any>();
+  @Input() chatHistory: ChatHistory;
   constructor(private context: UserContext, private apiService: ApiService) {}
 
+  deleteChat(friendId): void {
+    // this is called from user-profile component
+    this.deleteChatHistory.emit(friendId);
+  }
   ngOnInit(): void {
     this.user = this.context.user;
-    this.findAllMessagesBetweenTwoUsers();
   }
   ngAfterViewInit(): void {
     autocomplete('#search-friends', { hint: true }, [
@@ -67,50 +72,27 @@ export class MessengerComponent implements OnInit {
     this.getFriendIdEvent.emit(id);
   }
 
-  findAllMessagesBetweenTwoUsers(): void {
-    console.log(this.userChats);
-    this.friends.forEach((friend) => {
-      // creates a chatHistory object, where each key is an 'id' of each user's friends and it's value is an array of all messages between them
-      this.chatHistory[friend.id] = this.userChats.filter(
-        (userChat) =>
-          userChat.receiverId === friend.id || userChat.senderId === friend.id
-      );
-    });
-  }
-
-  deleteChatHistory(friendId): void {
-    let messageIdArr = [];
-    let isChatHistoryDeletedByOneUser = false;
-    this.chatHistory[friendId].forEach((message: Message) => {
-      messageIdArr.push(message.id);
-      if (message.userIdToDeleteChatHistory) {
-        isChatHistoryDeletedByOneUser = true;
-      }
-    });
-
-    if (isChatHistoryDeletedByOneUser) {
-      this.apiService
-        .deleteChatHistoryForBothUsers(messageIdArr)
-        .subscribe(() => (this.chatHistory[friendId] = []));
-    } else {
-      this.apiService
-        .deleteChatHistoryForOneUser(this.context.user.id, messageIdArr)
-        .subscribe(() => {
-          this.chatHistory[friendId].forEach((message: Message) => {
-            message.userIdToDeleteChatHistory = this.context.user.id;
-          });
-        });
-    }
-  }
-
   isChatHistoryDeleted(chatHistory: Message[]): boolean {
-    let isChatHistoryDeleted: boolean = false;
-    chatHistory.forEach((message: Message) => {
-      if (message.userIdToDeleteChatHistory === this.context.user.id) {
-        isChatHistoryDeleted = true;
-      }
-    });
+    let messagesNotDeleted: Message[] = chatHistory.filter(
+      (message) => message.userIdToDeleteChatHistory !== this.context.user.id
+    );
 
-    return isChatHistoryDeleted;
+    // if all messages have been deleted
+    if (messagesNotDeleted.length === 0) {
+      return true;
+    }
+    return false;
+  }
+
+  getLastMessageNotDeletedByUser(messages: Message[]): Message {
+    // reduceRight
+    return messages
+      .reduceRight((prev, curr) => {
+        prev.push(curr);
+        return prev;
+      }, [])
+      .find(
+        (message) => message.userIdToDeleteChatHistory !== this.context.user.id
+      );
   }
 }

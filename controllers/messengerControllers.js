@@ -6,7 +6,7 @@ module.exports = {
     try {
       const io = req.app.get("socketio");
       const message = await db.Messages.create(req.body);
-      io.emit("message", message);
+      io.emit("addMessage", message);
 
       res.status(200).json(message);
     } catch (error) {
@@ -52,21 +52,9 @@ module.exports = {
     }
   },
 
-  deleteMessage: async (req, res) => {
-    try {
-      const messageToDelete = await db.Messages.destroy({
-        where: {
-          id: req.params.id,
-        },
-      });
-      res.status(200).json(messageToDelete);
-    } catch (error) {
-      res.status(400).json(error);
-    }
-  },
-
   deleteChatHistoryForOneUser: async (req, res) => {
     try {
+      const io = req.app.get("socketio");
       let messageIdArr = req.body;
       let userId = req.params.userId;
 
@@ -82,7 +70,11 @@ module.exports = {
           },
         }
       );
-
+      let messageToDeleteInfo = {
+        messageIdArr: messageIdArr,
+        userId: Number(userId),
+      };
+      io.emit("deleteMessage", messageToDeleteInfo);
       res.status(200).json(chatHistory);
     } catch (error) {
       res.status(400).json(error);
@@ -91,11 +83,15 @@ module.exports = {
 
   deleteChatHistoryForBothUsers: async (req, res) => {
     try {
+      const io = req.app.get("socketio");
       let messageIdArr = req.query.id;
-
       const chatHistory = await db.Messages.destroy({
         where: { id: messageIdArr },
       });
+      let messageToDeleteInfo = {
+        messageIdArr: messageIdArr,
+      };
+      io.emit("deleteMessage", messageToDeleteInfo);
       res.status(200).json(chatHistory);
     } catch (error) {
       res.status(400).json(error);
@@ -104,9 +100,21 @@ module.exports = {
 
   updateMessageInfo: async (req, res) => {
     try {
-      let messageToUpdate = await db.Message.update(req.body, {
-        where: { id: req.params.id },
-      });
+      const io = req.app.get("socketio");
+      let messageIdArr = req.body;
+      const messageToUpdate = await db.Messages.update(
+        {
+          seenByReceiver: true,
+        },
+        {
+          where: {
+            id: {
+              [Op.in]: messageIdArr, // this will update all the records
+            }, // with an id from the messageId array
+          },
+        }
+      );
+      io.emit("messageSeenByReceiver", messageIdArr);
       res.status(200).json(messageToUpdate);
     } catch (error) {
       res.status(400).json(error);

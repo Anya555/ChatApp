@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   loginUser(f: NgForm): void {
     this.apiService.login(f.value).subscribe((userContext: UserContext) => {
       this.context.user = userContext.user;
+
       this.context.accessToken = userContext.accessToken;
       this.context.refreshToken = userContext.refreshToken;
       let authorizedUser = {

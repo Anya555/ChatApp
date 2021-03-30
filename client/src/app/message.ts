@@ -6,4 +6,5 @@ export class Message {
   updatedAt: string;
   senderId: number;
   userIdToDeleteChatHistory: number;
+  seenByReceiver: boolean;
 }

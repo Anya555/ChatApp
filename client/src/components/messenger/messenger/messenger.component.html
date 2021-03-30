@@ -43,27 +43,23 @@
           <div
             class="friend"
             *ngIf="
-              chatHistory[friend.id][chatHistory[friend.id].length - 1]
+              getLastMessageNotDeletedByUser(chatHistory[friend.id])
                 .senderId === user.id;
               else other_content
             "
           >
             you:
-            {{
-              chatHistory[friend.id][chatHistory[friend.id].length - 1].message
-            }}
+            {{ getLastMessageNotDeletedByUser(chatHistory[friend.id]).message }}
           </div>
-          <!-- else just display a message -->
+          <!-- else just display friend's name -->
           <ng-template #other_content>
             {{ friend.firstName }}:
             {{
-              chatHistory[friend.id][chatHistory[friend.id].length - 1].message
+              getLastMessageNotDeletedByUser(chatHistory[friend.id]).message
             }}</ng-template
           >
         </div>
-        <button class="btn" (click)="deleteChatHistory(friend.id)">
-          delete
-        </button>
+        <button class="btn" (click)="deleteChat(friend.id)">delete</button>
       </div>
     </div>
   </div>

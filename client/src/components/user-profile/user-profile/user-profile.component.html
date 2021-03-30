@@ -38,9 +38,11 @@
         [friends]="friends"
         [isChatRoomOpened]="isChatRoomOpened"
         [userChats]="userChats"
+        [chatHistory]="chatHistory"
         (isMessengerOpenedEvent)="updateIsMessengerOpened($event)"
         (isChatRoomOpenedEvent)="updateIsChatRoomOpened($event)"
         (getFriendIdEvent)="getFriendId($event)"
+        (deleteChatHistory)="deleteChatHistory($event)"
       ></app-messenger>
     </div>
     <div class="col-md-4 offset-sm-4 col-sm-12" *ngIf="isChatRoomOpened">
@@ -50,6 +52,8 @@
         [friendId]="friendId"
         [userChats]="userChats"
         (isNewMessageSentEvent)="updateIsNewMessageSentEvent($event)"
+        [message]="message"
+        (deleteChatHistory)="deleteChatHistory($event)"
       ></app-chat-room>
     </div>
   </div>

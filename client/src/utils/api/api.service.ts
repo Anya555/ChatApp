@@ -57,10 +57,6 @@ export class ApiService {
     return this.http.get<Message[]>('/api/messenger/user/' + id);
   };
 
-  deleteMessage = (id) => {
-    return this.http.delete('/api/messenger/message/' + id);
-  };
-
   updateUser = (id, user) => {
     return this.http.put('/api/users/' + id, user);
   };
@@ -81,7 +77,7 @@ export class ApiService {
     return this.http.delete('/api/messenger?' + str);
   };
 
-  updateMessageInfo = (id, message) => {
-    return this.http.put(`/api/messenger/message/${id}`, message);
+  updateMessageInfo = (messageIdArr: number[]) => {
+    return this.http.put('/api/messenger', messageIdArr);
   };
 }

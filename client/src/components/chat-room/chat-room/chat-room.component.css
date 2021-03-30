@@ -31,16 +31,23 @@
   float: left;
 }
 
-.user {
-  float: left;
+.message-sent-by-user {
+  display: inline-block;
+  text-align: right;
 }
+
+/* .seen {
+  float: right;
+  margin-right: 10px;
+  font-size: small;
+} */
 
 .image {
   padding-right: 5px;
 }
 
 .friend {
-  float: right;
+  float: left;
 }
 
 .friends-image {

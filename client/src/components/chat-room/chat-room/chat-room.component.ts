@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ApiService } from '../../../utils/api/api.service';
 import { User, UserContext } from '../../../app/userContext';
-import { SocketIoService } from '../../../utils/api/socket.io.service';
 import { Message } from '../../../app/message';
 import { AngularFireStorage } from '@angular/fire/storage';
 
@@ -15,25 +14,51 @@ export class ChatRoomComponent implements OnInit {
   messages: Message[];
   user: User;
   friend: User;
+  @Input() message: Message;
   @Input() userChats: Message[];
   @Input() isChatRoomOpened: boolean;
   @Input() friendId: number;
   @Output() isChatRoomOpenedEvent = new EventEmitter<boolean>();
   @Output() isNewMessageSentEvent = new EventEmitter<Message[]>();
+  @Output() deleteChatHistory = new EventEmitter<any>();
   constructor(
     private apiService: ApiService,
     private userContext: UserContext,
-    private socketIoService: SocketIoService,
     private firebaseStorage: AngularFireStorage
   ) {}
 
   ngOnInit(): void {
-    this.socketIoService.socket.on('message', (message: Message) => {
-      this.messages.push(message);
-      this.userChats.push(message);
-      this.isNewMessageSentEvent.emit(this.userChats);
-    });
     this.getChatHistory();
+    this.updateMessageInfo();
+  }
+
+  deleteChat(message: Message): void {
+    let messageIdArr = [];
+    messageIdArr.push(message.id);
+
+    if (!message.userIdToDeleteChatHistory) {
+      this.apiService
+        .deleteChatHistoryForOneUser(this.userContext.user.id, messageIdArr)
+        .subscribe(() => {});
+    } else {
+      this.apiService
+        .deleteChatHistoryForBothUsers(messageIdArr)
+        .subscribe(() => {});
+    }
+  }
+
+  updateMessageInfo(): void {
+    let messageIdArr: number[] = [];
+    this.userChats.forEach((message) => {
+      if (
+        this.isChatRoomOpened &&
+        this.userContext.user.id !== message.senderId
+      ) {
+        messageIdArr.push(message.id);
+      }
+    });
+
+    this.apiService.updateMessageInfo(messageIdArr).subscribe(() => {});
   }
 
   closePrivateChatRoom(): void {
@@ -60,7 +85,6 @@ export class ChatRoomComponent implements OnInit {
         this.messages = data.messages;
         this.user = data.user;
         this.friend = data.friend;
-        this.setImageUrl(this.user);
         this.setImageUrl(this.friend);
       });
   }
@@ -76,11 +100,18 @@ export class ChatRoomComponent implements OnInit {
     }
   }
 
-  deleteMessage(id): void {
-    this.apiService.deleteMessage(id).subscribe(() => {
-      this.messages = this.messages.filter((message) => message.id !== id);
-      this.userChats = this.userChats.filter((message) => message.id !== id);
-      this.isNewMessageSentEvent.emit(this.userChats);
-    });
+  isMessageSeen(messageToCheck: Message): boolean {
+    let messagesSeenByReceiver: Message[] = this.messages.filter(
+      (message) => message.seenByReceiver
+    );
+
+    if (
+      messagesSeenByReceiver.length &&
+      messageToCheck.id ===
+        messagesSeenByReceiver[messagesSeenByReceiver.length - 1].id
+    ) {
+      return true;
+    }
+    return false;
   }
 }
