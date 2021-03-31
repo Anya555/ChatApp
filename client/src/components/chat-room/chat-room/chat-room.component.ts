@@ -4,6 +4,7 @@ import { ApiService } from '../../../utils/api/api.service';
 import { User, UserContext } from '../../../app/userContext';
 import { Message } from '../../../app/message';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-chat-room',

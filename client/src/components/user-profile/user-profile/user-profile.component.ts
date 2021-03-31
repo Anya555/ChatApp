@@ -9,6 +9,7 @@ import { SocketIoService } from '../../../utils/api/socket.io.service';
 import { ChatRoomComponent } from '../../chat-room/chat-room/chat-room.component';
 import { MessengerComponent } from '../../messenger/messenger/messenger.component';
 import { ApiService } from '../../../utils/api/api.service';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 interface MessageToDeleteInfo {
   messageIdArr: number[];
@@ -61,19 +62,18 @@ export class UserProfileComponent implements OnInit {
     this.findAllMessagesBetweenTwoUsers();
 
     this.socketIoService.socket.on('addMessage', (message: Message) => {
-      if (this.chatRoomComponent) {
-        this.chatRoomComponent.messages.push(message);
-      }
       this.userChats.push(message);
       this.findAllMessagesBetweenTwoUsers();
+      if (this.chatRoomComponent) {
+        this.chatRoomComponent.messages.push(message);
+        this.chatRoomComponent.updateMessageInfo();
+      }
     });
 
     this.socketIoService.socket.on(
       'messageSeenByReceiver',
       (messageIdArr: number[]) => {
         this.userChats.forEach((message) => {
-          // console.log(messageIdArr);
-          // console.log(message.id);
           if (messageIdArr.includes(message.id)) {
             message.seenByReceiver = true;
           }

@@ -85,7 +85,6 @@ export class MessengerComponent implements OnInit {
   }
 
   getLastMessageNotDeletedByUser(messages: Message[]): Message {
-    // reduceRight
     return messages
       .reduceRight((prev, curr) => {
         prev.push(curr);

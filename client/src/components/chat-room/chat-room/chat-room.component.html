@@ -74,7 +74,24 @@
           isMessageSeen(message)
         "
       >
-        seen
+        <div *ngIf="friend.imageUrl" class="friend seen">
+          <img
+            avatar
+            src="{{ friend.imageUrl }}"
+            width="30px"
+            height="30px"
+            class="friends-image"
+          />
+        </div>
+        <div *ngIf="!friend.imageUrl" class="friend seen">
+          <img
+            class="friends-image"
+            avatar
+            src="/assets/images/avatar.png"
+            width="30px"
+            height="30px"
+          />
+        </div>
       </div>
     </div>
   </div>

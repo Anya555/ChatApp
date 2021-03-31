@@ -36,11 +36,9 @@
   text-align: right;
 }
 
-/* .seen {
+.seen {
   float: right;
-  margin-right: 10px;
-  font-size: small;
-} */
+}
 
 .image {
   padding-right: 5px;
