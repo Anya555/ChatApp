@@ -1,0 +1,23 @@
+.card {
+  padding: 30px;
+}
+label,
+.btn {
+  text-transform: uppercase;
+  font-size: small;
+  font-weight: bold;
+  color: rgb(57, 3, 107);
+}
+
+.btn {
+  width: 100%;
+  color: white;
+  background-image: linear-gradient(to right, rgb(56, 2, 44), #945089);
+}
+
+h2 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: medium;
+  color: rgb(56, 2, 44);
+}
