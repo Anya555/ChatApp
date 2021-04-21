@@ -1,0 +1,35 @@
+.card {
+  padding: 30px;
+  top: 80px;
+}
+
+label,
+.btn {
+  text-transform: uppercase;
+  font-size: smaller;
+  font-weight: bold;
+  color: rgb(57, 3, 107);
+}
+
+.btn {
+  width: 100%;
+  color: white;
+  background-image: linear-gradient(to right, rgb(56, 2, 44), #945089);
+}
+
+h2 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: medium;
+  color: rgb(90, 45, 80);
+}
+
+.required {
+  text-transform: uppercase;
+  font-size: small;
+  color: red;
+}
+
+a {
+  text-align: center;
+}

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ApiService } from '../../../utils/api/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { User, UserContext } from '../../../app/userContext';
+import { UserContext } from '../../../app/userContext';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,8 +12,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private router: Router,
-    private context: UserContext,
-    private route: ActivatedRoute
+    private context: UserContext
   ) {}
 
   ngOnInit(): void {}

@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ApiService } from '../../../utils/api/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserContext } from '../../../app/userContext';
+
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
